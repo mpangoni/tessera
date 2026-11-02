@@ -11,7 +11,7 @@ Refine block controls and keyboard editing while retaining the portable block mo
 
 ## Scope and interactions
 
-- Hide drag and delete controls by default. Reveal them on row hover with a subtle fade, keep them visible while the pointer is within the row or controls, reserve their layout space, and style icons with tertiary/secondary colors at about 40% opacity, increasing to about 85% on icon hover.
+- Hide drag and delete controls by default. Reveal them on row hover with a subtle fade, keep them visible while the pointer is within the row or controls, and show controls for only one block at a time. Preserve visibility for a keyboard-focused block action. Reserve their layout space and style icons with tertiary/secondary colors at about 40% opacity, increasing to about 85% on icon hover.
 - Remove all plus controls. Insert blocks through Return.
 - Return splits at the caret or selected range. Text before the range stays in the current block; selected text is removed; text after it moves to a new block. At the start/end this creates an empty block before/after. Focus and caret move to the new block's start.
 - Preserve native Shift+Return line breaks. Code and opaque Markdown blocks keep their safe in-block newline behavior.

@@ -14,7 +14,11 @@ struct EditorView: View {
     @State private var lastPublished = ""
     @State private var focusedBlock: UUID?
     @State private var focusOffset = 0
+    @State private var hoveredBlockID: UUID?
+    @State private var focusedControlsBlockID: UUID?
     @StateObject private var undoCoordinator = BlockUndoCoordinator()
+
+    private var controlsBlockID: UUID? { focusedControlsBlockID ?? hoveredBlockID }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -66,12 +70,27 @@ struct EditorView: View {
                         block: block,
                         text: contentBinding(for: block),
                         isFocused: focusedBlock == block.id,
+                        areControlsVisible: controlsBlockID == block.id,
                         caretOffset: focusOffset,
                         isDropTarget: dropTarget == block.id,
                         onFocus: { focusedBlock = block.id },
                         onReturn: { range in split(block, selection: range) },
                         onBackspace: { mergePrevious(block) },
                         onVerticalBoundary: { moveAcrossBoundary(from: block.id, up: $0) },
+                        onHoverBlock: { isHovering in
+                            if isHovering {
+                                hoveredBlockID = block.id
+                            } else if hoveredBlockID == block.id {
+                                hoveredBlockID = nil
+                            }
+                        },
+                        onDeleteFocusChange: { isFocused in
+                            if isFocused {
+                                focusedControlsBlockID = block.id
+                            } else if focusedControlsBlockID == block.id {
+                                focusedControlsBlockID = nil
+                            }
+                        },
                         onDelete: { remove(block.id) },
                         onMove: { move(block.id, by: $0) },
                         onDrop: { id in move(id, to: blocks.firstIndex(where: { $0.id == block.id }) ?? blocks.count) },
@@ -287,22 +306,24 @@ private struct BlockRow: View {
     let block: TesseraBlock
     @Binding var text: String
     let isFocused: Bool
+    let areControlsVisible: Bool
     let caretOffset: Int
     let isDropTarget: Bool
     let onFocus: () -> Void
     let onReturn: (NSRange) -> Bool
     let onBackspace: () -> Bool
     let onVerticalBoundary: (Bool) -> Bool
+    let onHoverBlock: (Bool) -> Void
+    let onDeleteFocusChange: (Bool) -> Void
     let onDelete: () -> Void
     let onMove: (Int) -> Void
     let onDrop: (UUID) -> Void
     let onHoverDrop: (Bool) -> Void
-    @State private var isHovered = false
     @State private var dragHandleHovered = false
     @State private var deleteHovered = false
     @FocusState private var deleteFocused: Bool
 
-    private var controlsVisible: Bool { isHovered || deleteFocused }
+    private var controlsVisible: Bool { areControlsVisible }
 
     var body: some View {
         HStack(alignment: .top, spacing: 8) {
@@ -336,8 +357,9 @@ private struct BlockRow: View {
         .padding(.vertical, 4)
         .background(isDropTarget ? Color.accentColor.opacity(0.12) : .clear)
         .contentShape(Rectangle())
-        .overlay { BlockHoverTracker(onHover: { isHovered = $0 }).allowsHitTesting(false) }
+        .overlay { BlockHoverTracker(onHover: onHoverBlock).allowsHitTesting(false) }
         .animation(.easeInOut(duration: 0.14), value: controlsVisible)
+        .onChange(of: deleteFocused) { _, isFocused in onDeleteFocusChange(isFocused) }
         .accessibilityAction(named: Text("Move block up")) { onMove(-1) }
         .accessibilityAction(named: Text("Move block down")) { onMove(1) }
         .dropDestination(for: String.self) { values, _ in
