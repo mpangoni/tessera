@@ -1,6 +1,6 @@
 # Tessera
 
-Tessera 0.1.2 is a local-first Markdown block editor. The portable `TesseraCore` Swift package contains the document model, Markdown codec, and editing commands; the macOS app owns document and input integration.
+**Tessera 0.1.2 is a very unstable early version.** It is a local-first Markdown block editor. The portable `TesseraCore` Swift package contains the document model, Markdown codec, and editing commands; the macOS app owns document and input integration.
 
 ## Requirements
 
