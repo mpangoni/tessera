@@ -4,6 +4,7 @@ import TesseraCore
 struct EditorView: View {
     @Binding var document: TesseraDocument
     @Environment(\.undoManager) private var undoManager
+    @State private var editorMode: EditorMode = .blocks
     @State private var blocks: [TesseraBlock] = []
     @State private var originalSource: String?
     @State private var lineEnding = "\n"
@@ -16,6 +17,52 @@ struct EditorView: View {
     @StateObject private var undoCoordinator = BlockUndoCoordinator()
 
     var body: some View {
+        VStack(spacing: 0) {
+            HStack {
+                Picker("Document view", selection: $editorMode) {
+                    Text("Blocks").tag(EditorMode.blocks)
+                    Text("Raw Markdown").tag(EditorMode.rawMarkdown)
+                }
+                .pickerStyle(.segmented)
+                .labelsHidden()
+                .fixedSize()
+                .accessibilityLabel("Document view")
+                Spacer(minLength: 0)
+            }
+            .padding(.horizontal, 20)
+            .padding(.vertical, 8)
+            .background(.bar)
+
+            Divider()
+
+            Group {
+                switch editorMode {
+                case .blocks:
+                    blockEditor
+                case .rawMarkdown:
+                    rawMarkdownEditor
+                }
+            }
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+
+            Divider()
+
+            HStack { Spacer(minLength: 0) }
+                .frame(height: 28)
+                .background(.bar)
+        }
+        .onAppear {
+            load()
+            configureUndoRestoration()
+            undoCoordinator.manager = undoManager
+        }
+        .onChange(of: undoManager) { _, manager in undoCoordinator.manager = manager }
+        .onChange(of: document.markdown) { _, value in
+            if value != lastPublished { load() }
+        }
+    }
+
+    private var blockEditor: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
                 ForEach(blocks) { block in
@@ -40,15 +87,15 @@ struct EditorView: View {
             .padding(32)
             .frame(maxWidth: .infinity)
         }
-        .onAppear {
-            load()
-            configureUndoRestoration()
-            undoCoordinator.manager = undoManager
-        }
-        .onChange(of: undoManager) { _, manager in undoCoordinator.manager = manager }
-        .onChange(of: document.markdown) { _, value in
-            if value != lastPublished { load() }
-        }
+    }
+
+    private var rawMarkdownEditor: some View {
+        TextEditor(text: $document.markdown)
+            .font(.system(.body, design: .monospaced))
+            .scrollContentBackground(.hidden)
+            .padding(28)
+            .frame(maxWidth: 780, maxHeight: .infinity)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
     private func load() {
@@ -212,6 +259,11 @@ struct EditorView: View {
             lastPublished.wrappedValue = markdown
         }
     }
+}
+
+private enum EditorMode: Hashable {
+    case blocks
+    case rawMarkdown
 }
 
 private struct EditorSnapshot {

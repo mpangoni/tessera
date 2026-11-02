@@ -8,6 +8,7 @@
 - Added a UTF-8 Markdown codec for paragraphs, headings, list items, blockquotes, horizontal rules, and fenced code. It retains exact original source for no-edit saves, preserves unsupported or nested constructs as opaque blocks, and round-trips empty leading/trailing paragraphs after edits.
 - Added a native AppKit text input bridge for cursor/selection-aware Return and Backspace, plus hover-only drag/delete controls with keyboard move actions and single-block drag reordering. The plus controls are removed.
 - Up/Down moves between visual lines within a block and transfers focus to the adjacent block at a block boundary. At the document boundary, native text-view behavior applies. Set the Launch Services multiple-instance prohibition key.
+- Added a compact top segmented switch between block editing and a native raw Markdown text editor. Both views edit the same document string; the bottom navigation area is intentionally empty.
 - The app remains a SwiftUI `FileDocument` / `DocumentGroup` document application for New/Open/Save/Save As and multiple windows.
 - Bumped the app's marketing version to 0.1.2 and added the accepted refinements as SPEC-0002.
 - The Xcode project targets macOS 26.5, using SwiftUI `FileDocument` / `DocumentGroup`. The installed Xcode 26.6 SDK requires a direct standard Markdown UTI identifier in place of its unavailable `UTType.markdown` declaration.
