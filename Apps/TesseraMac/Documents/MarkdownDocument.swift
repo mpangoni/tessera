@@ -2,7 +2,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 /// The native macOS document wrapper. Markdown remains the file's only stored data.
-struct TesseraDocument: FileDocument {
+struct MarkdownDocument: FileDocument {
     // Markdown UTType is not exposed by the installed macOS 26 SDK.
     /// Accepts Markdown files and plain-text files through macOS's document picker.
     static var readableContentTypes: [UTType] { [UTType(importedAs: "net.daringfireball.markdown", conformingTo: .plainText), .plainText] }

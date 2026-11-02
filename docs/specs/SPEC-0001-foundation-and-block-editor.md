@@ -183,21 +183,26 @@ Tessera/
   Tessera.xcodeproj/
   Apps/
     TesseraMac/
-      TesseraApp.swift
+      App/
+        TesseraApp.swift
       Documents/             # SwiftUI Document integration
-      Views/                 # Window and editor composition
-      Platform/              # macOS-specific input bridges
+      Editor/
+        MainEditorView.swift
+        Navigation/          # Top and bottom editor bars
+        Content/
+          BlockDocument/     # Block document editor UI
+          RawMarkdown/       # Raw Markdown editor UI
+      Platform/
+        AppKit/              # macOS-specific input bridges
   Packages/
     TesseraCore/
       Package.swift
       Sources/TesseraCore/
-        Model/               # Block and document models
-        Markdown/            # Import/export codec
-        Editing/             # Testable commands
+        Content/
+          Blocks/            # Block and document models and commands
+        Services/
+          Markdown/          # Markdown import/export codec
       Tests/TesseraCoreTests/
-    TesseraEditorUI/
-      Package.swift
-      Sources/TesseraEditorUI/  # Reusable SwiftUI editor views
   docs/
     specs/
       SPEC-0001-foundation-and-block-editor.md
@@ -205,15 +210,16 @@ Tessera/
     roadmap.md
 ```
 
-`TesseraEditorUI` can initially be a target inside a shared package instead of a separate package if that simplifies builds. Do not split into many modules prematurely. Core editing functions must be unit-testable without creating a window. The macOS target owns AppKit adapters and document menus, not parsing logic.
+Keep the current Swift package boundary until another platform needs to share UI code. Do not split into many modules prematurely. Core editing functions must be unit-testable without creating a window. The macOS target owns AppKit adapters and document menus, not parsing logic.
 
 ### Recommended responsibilities
 
-- `MarkdownCodec`: Markdown string ↔ block document, with preservation and serialization rules.
-- `BlockEditorCommands`: insert, update, split, merge when safe, delete, and move.
-- `EditorViewModel` or equivalent: focus state, selection, undo registration, and command dispatch, without direct persistence ownership.
-- `TesseraDocument`: the platform document adapter and lifecycle integration.
-- `BlockEditorView` / `BlockRowView`: reusable SwiftUI editor UI.
+- `MarkdownCodec`: Markdown string ↔ block document conversion with preservation and serialization rules, within `Services/Markdown`.
+- `BlockEditorCommands`: insert, update, split, merge when safe, delete, and move within `Content/Blocks`.
+- `MainEditorView`: compose the navigation bars and selected editor; coordinate load, publish, and editor changes.
+- `BlockDocumentEditorSession`: own block editing state, focus, selection, undo registration, and dispatch to Core commands.
+- `MarkdownDocument`: the platform document adapter and lifecycle integration.
+- `BlockDocumentEditorView` / block row view: reusable SwiftUI editor UI.
 
 ## 9. Testing and quality gate
 

@@ -1,39 +1,322 @@
 // !$*UTF8*$!
 {
 	archiveVersion = 1;
-	classes = {};
+	classes = {
+	};
 	objectVersion = 60;
 	objects = {
-		A10000000000000000000001 /* Tessera.app */ = {isa = PBXNativeTarget; buildConfigurationList = A10000000000000000000002; buildPhases = (A10000000000000000000003, A10000000000000000000004, A10000000000000000000005,); buildRules = (); dependencies = (); name = Tessera; packageProductDependencies = (A10000000000000000000006,); productName = Tessera; productReference = A10000000000000000000007; productType = "com.apple.product-type.application"; };
-		A10000000000000000000003 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000008, A10000000000000000000009, A1000000000000000000000A, A1000000000000000000001E,); runOnlyForDeploymentPostprocessing = 0; };
-		A10000000000000000000004 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A1000000000000000000000B,); runOnlyForDeploymentPostprocessing = 0; };
-		A10000000000000000000005 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
-		A1000000000000000000000C = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2660; LastUpgradeCheck = 2660; TargetAttributes = {A10000000000000000000001 = {CreatedOnToolsVersion = 26.0; }; }; }; buildConfigurationList = A1000000000000000000000D; compatibilityVersion = "Xcode 15.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base,); mainGroup = A1000000000000000000000E; packageReferences = (A1000000000000000000000F,); productRefGroup = A10000000000000000000010; projectDirPath = ""; projectRoot = ""; targets = (A10000000000000000000001,); };
-		A1000000000000000000000E = {isa = PBXGroup; children = (A10000000000000000000011, A10000000000000000000010,); sourceTree = "<group>"; };
-		A10000000000000000000011 = {isa = PBXGroup; children = (A10000000000000000000012, A10000000000000000000013, A10000000000000000000014, A1000000000000000000001D,); path = Apps/TesseraMac; sourceTree = "<group>"; };
-		A1000000000000000000001D = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Platform/BlockTextEditor.swift; sourceTree = "<group>"; };
-		A1000000000000000000001E = {isa = PBXBuildFile; fileRef = A1000000000000000000001D; };
-		A10000000000000000000012 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseraApp.swift; sourceTree = "<group>"; };
-		A10000000000000000000013 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Documents/TesseraDocument.swift; sourceTree = "<group>"; };
-		A10000000000000000000014 = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Views/EditorView.swift; sourceTree = "<group>"; };
-		A10000000000000000000007 = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tessera.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A10000000000000000000010 = {isa = PBXGroup; children = (A10000000000000000000007,); name = Products; sourceTree = "<group>"; };
-		A10000000000000000000008 = {isa = PBXBuildFile; fileRef = A10000000000000000000012; };
-		A10000000000000000000009 = {isa = PBXBuildFile; fileRef = A10000000000000000000013; };
-		A1000000000000000000000A = {isa = PBXBuildFile; fileRef = A10000000000000000000014; };
-		A1000000000000000000000B = {isa = PBXBuildFile; productRef = A10000000000000000000006; };
-		A10000000000000000000006 = {isa = XCSwiftPackageProductDependency; productName = TesseraCore; productPackage = A10000000000000000000015; };
-		A1000000000000000000000F = {isa = XCLocalSwiftPackageReference; relativePath = Packages/TesseraCore; };
-		A10000000000000000000015 = {isa = XCSwiftPackageProductDependency; package = A1000000000000000000000F; };
-		A10000000000000000000016 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000017, A10000000000000000000018,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		A10000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (A10000000000000000000019, A1000000000000000000001A,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		A1000000000000000000000D = {isa = XCConfigurationList; buildConfigurations = (A1000000000000000000001B, A1000000000000000000001C,); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
-		A10000000000000000000017 = {isa = XCBuildConfiguration; buildSettings = {MACOSX_DEPLOYMENT_TARGET = 26.5; SDKROOT = macosx; SWIFT_VERSION = 6.0; }; name = Debug; };
-		A10000000000000000000018 = {isa = XCBuildConfiguration; buildSettings = {MACOSX_DEPLOYMENT_TARGET = 26.5; SDKROOT = macosx; SWIFT_VERSION = 6.0; }; name = Release; };
-			A10000000000000000000019 = {isa = XCBuildConfiguration; buildSettings = {CURRENT_PROJECT_VERSION = 3; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_FILE = Apps/TesseraMac/Info.plist; INFOPLIST_KEY_CFBundleDisplayName = Tessera; INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.productivity; MACOSX_DEPLOYMENT_TARGET = 26.5; MARKETING_VERSION = 0.1.2; PRODUCT_BUNDLE_IDENTIFIER = app.tessera.mac; PRODUCT_NAME = Tessera; SWIFT_VERSION = 6.0; }; name = Debug; };
-			A1000000000000000000001A = {isa = XCBuildConfiguration; buildSettings = {CURRENT_PROJECT_VERSION = 3; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_FILE = Apps/TesseraMac/Info.plist; INFOPLIST_KEY_CFBundleDisplayName = Tessera; INFOPLIST_KEY_LSApplicationCategoryType = public.app-category.productivity; MACOSX_DEPLOYMENT_TARGET = 26.5; MARKETING_VERSION = 0.1.2; PRODUCT_BUNDLE_IDENTIFIER = app.tessera.mac; PRODUCT_NAME = Tessera; SWIFT_VERSION = 6.0; }; name = Release; };
-		A1000000000000000000001B = {isa = XCBuildConfiguration; buildSettings = {MACOSX_DEPLOYMENT_TARGET = 26.5; SDKROOT = macosx; SWIFT_VERSION = 6.0; }; name = Debug; };
-		A1000000000000000000001C = {isa = XCBuildConfiguration; buildSettings = {MACOSX_DEPLOYMENT_TARGET = 26.5; SDKROOT = macosx; SWIFT_VERSION = 6.0; }; name = Release; };
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000026 /* Editor/Navigation/EditorTopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000028 /* Editor/Navigation/EditorTopBar.swift */; };
+		A10000000000000000000027 /* Editor/Navigation/EditorBottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000029 /* Editor/Navigation/EditorBottomBar.swift */; };
+		A10000000000000000000039 /* BlockDocumentEditorSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000040 /* BlockDocumentEditorSession.swift */; };
+		A10000000000000000000008 /* TesseraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000012 /* TesseraApp.swift */; };
+		A10000000000000000000009 /* Documents/MarkdownDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000013 /* Documents/MarkdownDocument.swift */; };
+		A1000000000000000000000A /* Editor/MainEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000014 /* Editor/MainEditorView.swift */; };
+		A10000000000000000000020 /* EditorImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000023 /* EditorImplementation.swift */; };
+		A10000000000000000000021 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000024 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift */; };
+		A10000000000000000000022 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000025 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift */; };
+		A1000000000000000000000B /* TesseraCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000006 /* TesseraCore */; };
+		A1000000000000000000001E /* Platform/AppKit/BlockTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001D /* Platform/AppKit/BlockTextEditor.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A10000000000000000000028 /* Editor/Navigation/EditorTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTopBar.swift; sourceTree = "<group>"; };
+		A10000000000000000000029 /* Editor/Navigation/EditorBottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorBottomBar.swift; sourceTree = "<group>"; };
+		A10000000000000000000040 /* BlockDocumentEditorSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockDocumentEditorSession.swift; sourceTree = "<group>"; };
+		A10000000000000000000007 /* Tessera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tessera.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000012 /* TesseraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseraApp.swift; sourceTree = "<group>"; };
+		A10000000000000000000013 /* Documents/MarkdownDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownDocument.swift; sourceTree = "<group>"; };
+		A10000000000000000000014 /* Editor/MainEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEditorView.swift; sourceTree = "<group>"; };
+		A10000000000000000000023 /* EditorImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorImplementation.swift; sourceTree = "<group>"; };
+		A10000000000000000000024 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockDocumentEditorView.swift; sourceTree = "<group>"; };
+		A10000000000000000000025 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawMarkdownEditorView.swift; sourceTree = "<group>"; };
+		A1000000000000000000001D /* Platform/AppKit/BlockTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockTextEditor.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A10000000000000000000004 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1000000000000000000000B /* TesseraCore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A1000000000000000000000E = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000011 /* Apps/TesseraMac */,
+				A10000000000000000000010 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A10000000000000000000010 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000007 /* Tessera.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000011 /* Apps/TesseraMac */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000030 /* App */,
+				A10000000000000000000031 /* Documents */,
+				A10000000000000000000032 /* Editor */,
+				A10000000000000000000033 /* Platform */,
+			);
+			path = Apps/TesseraMac;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000030 /* App */ = {
+			isa = PBXGroup;
+			children = (A10000000000000000000012 /* TesseraApp.swift */);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000031 /* Documents */ = {
+			isa = PBXGroup;
+			children = (A10000000000000000000013 /* Documents/MarkdownDocument.swift */);
+			path = Documents;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000032 /* Editor */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000014 /* Editor/MainEditorView.swift */,
+				A10000000000000000000034 /* Content */,
+				A10000000000000000000035 /* Navigation */,
+			);
+			path = Editor;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000034 /* Content */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000023 /* EditorImplementation.swift */,
+				A10000000000000000000036 /* BlockDocument */,
+				A10000000000000000000037 /* RawMarkdown */,
+			);
+			path = Content;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000035 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000028 /* Editor/Navigation/EditorTopBar.swift */,
+				A10000000000000000000029 /* Editor/Navigation/EditorBottomBar.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000036 /* BlockDocument */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000024 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift */,
+				A10000000000000000000040 /* BlockDocumentEditorSession.swift */,
+			);
+			path = BlockDocument;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000037 /* RawMarkdown */ = {
+			isa = PBXGroup;
+			children = (A10000000000000000000025 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift */);
+			path = RawMarkdown;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000033 /* Platform */ = {
+			isa = PBXGroup;
+			children = (A10000000000000000000038 /* AppKit */);
+			path = Platform;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000038 /* AppKit */ = {
+			isa = PBXGroup;
+			children = (A1000000000000000000001D /* Platform/AppKit/BlockTextEditor.swift */);
+			path = AppKit;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A10000000000000000000001 /* Tessera */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000002 /* Build configuration list for PBXNativeTarget "Tessera" */;
+			buildPhases = (
+				A10000000000000000000003 /* Sources */,
+				A10000000000000000000004 /* Frameworks */,
+				A10000000000000000000005 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Tessera;
+			packageProductDependencies = (
+				A10000000000000000000006 /* TesseraCore */,
+			);
+			productName = Tessera;
+			productReference = A10000000000000000000007 /* Tessera.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1000000000000000000000C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					A10000000000000000000001 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+				};
+			};
+			buildConfigurationList = A1000000000000000000000D /* Build configuration list for PBXProject "Tessera" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A1000000000000000000000E;
+			packageReferences = (
+				A1000000000000000000000F /* XCLocalSwiftPackageReference "Packages/TesseraCore" */,
+			);
+			productRefGroup = A10000000000000000000010 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A10000000000000000000001 /* Tessera */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A10000000000000000000005 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A10000000000000000000003 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000008 /* TesseraApp.swift in Sources */,
+				A10000000000000000000009 /* Documents/MarkdownDocument.swift in Sources */,
+				A1000000000000000000000A /* Editor/MainEditorView.swift in Sources */,
+				A10000000000000000000020 /* EditorImplementation.swift in Sources */,
+				A10000000000000000000021 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift in Sources */,
+				A10000000000000000000022 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift in Sources */,
+				A10000000000000000000026 /* Editor/Navigation/EditorTopBar.swift in Sources */,
+				A10000000000000000000027 /* Editor/Navigation/EditorBottomBar.swift in Sources */,
+				A10000000000000000000039 /* BlockDocumentEditorSession.swift in Sources */,
+				A1000000000000000000001E /* Platform/AppKit/BlockTextEditor.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A10000000000000000000019 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/TesseraMac/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Tessera;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 0.1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = app.tessera.mac;
+				PRODUCT_NAME = Tessera;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A1000000000000000000001A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CURRENT_PROJECT_VERSION = 3;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Apps/TesseraMac/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = Tessera;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 0.1.2;
+				PRODUCT_BUNDLE_IDENTIFIER = app.tessera.mac;
+				PRODUCT_NAME = Tessera;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A1000000000000000000001B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A1000000000000000000001C /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A10000000000000000000002 /* Build configuration list for PBXNativeTarget "Tessera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A10000000000000000000019 /* Debug */,
+				A1000000000000000000001A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1000000000000000000000D /* Build configuration list for PBXProject "Tessera" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000000000000000000001B /* Debug */,
+				A1000000000000000000001C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		A1000000000000000000000F /* XCLocalSwiftPackageReference "Packages/TesseraCore" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = Packages/TesseraCore;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A10000000000000000000006 /* TesseraCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TesseraCore;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
-	rootObject = A1000000000000000000000C;
+	rootObject = A1000000000000000000000C /* Project object */;
 }

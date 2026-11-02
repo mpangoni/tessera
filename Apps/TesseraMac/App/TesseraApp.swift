@@ -4,9 +4,10 @@ import SwiftUI
 @main
 struct TesseraApp: App {
     var body: some Scene {
+
         // Each document window gets its own editor view and bound Markdown document.
-        DocumentGroup(newDocument: TesseraDocument()) { configuration in
-            EditorView(document: configuration.$document)
+        DocumentGroup(newDocument: MarkdownDocument()) { configuration in
+            MainEditorView(document: configuration.$document)
                 .frame(minWidth: 640, minHeight: 480)
         }
     }
