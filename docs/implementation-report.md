@@ -8,7 +8,7 @@
 - Added a UTF-8 Markdown codec for paragraphs, headings, list items, blockquotes, horizontal rules, and fenced code. It retains exact original source for no-edit saves, preserves unsupported or nested constructs as opaque blocks, and round-trips empty leading/trailing paragraphs after edits.
 - Added a native AppKit text input bridge for cursor/selection-aware Return and Backspace, plus hover-only drag/delete controls with keyboard move actions and single-block drag reordering. Hover control visibility is coordinated across rows so only one block shows controls at a time. The plus controls are removed.
 - Up/Down moves between visual lines within a block and transfers focus to the adjacent block at a block boundary. At the document boundary, native text-view behavior applies. Set the Launch Services multiple-instance prohibition key.
-- Added a compact native macOS switch-style Toggle at the top right to select between block editing and a native raw Markdown text editor. Both views edit the same document string; the bottom navigation area is intentionally empty.
+- Added a compact, capsule-rounded native icon-only segmented control at the top right to select between block editing and a native raw Markdown text editor. Both views edit the same document string; the bottom navigation area is intentionally empty.
 - The app remains a SwiftUI `FileDocument` / `DocumentGroup` document application for New/Open/Save/Save As and multiple windows.
 - Enabled Xcode's local ad-hoc code signing for the app target. This lets Launch Services validate and launch the app from Xcode without requiring a Developer ID certificate.
 - Bumped the app's marketing version to 0.1.2 and added the accepted refinements as SPEC-0002.

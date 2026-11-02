@@ -7,11 +7,11 @@
 
 ## Goal
 
-Let users edit one Markdown document either as blocks or as raw Markdown, with a small native macOS toggle in the document's top navigation area.
+Let users edit one Markdown document either as blocks or as raw Markdown, with a small native macOS segmented control in the document's top navigation area.
 
 ## Scope and interactions
 
-- Add a native switch-style `Toggle` labeled **Raw Markdown** at the right side of the top navigation area. Off selects block editing; on selects raw Markdown editing.
+- Add an icon-only native segmented control at the right side of the top navigation area, clipped to a full capsule shape: a stacked-block icon selects block editing, and a braces icon selects raw Markdown editing. Provide accessible names and tooltips for both icons.
 - Keep the bottom navigation area empty in this release.
 - Raw Markdown mode edits the document's UTF-8 Markdown text directly in a native text editor.
 - Both editing modes use the same document value and the existing native document save, reopen, and unsaved-change behavior.
