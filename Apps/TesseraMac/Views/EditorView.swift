@@ -28,6 +28,7 @@ struct EditorView: View {
                         onFocus: { focusedBlock = block.id },
                         onReturn: { range in split(block, selection: range) },
                         onBackspace: { mergePrevious(block) },
+                        onVerticalBoundary: { moveAcrossBoundary(from: block.id, up: $0) },
                         onDelete: { remove(block.id) },
                         onMove: { move(block.id, by: $0) },
                         onDrop: { id in move(id, to: blocks.firstIndex(where: { $0.id == block.id }) ?? blocks.count) },
@@ -153,6 +154,16 @@ struct EditorView: View {
         move(id, to: index + distance)
     }
 
+    private func moveAcrossBoundary(from id: UUID, up: Bool) -> Bool {
+        guard let index = blocks.firstIndex(where: { $0.id == id }) else { return false }
+        let adjacentIndex = up ? index - 1 : index + 1
+        guard blocks.indices.contains(adjacentIndex) else { return false }
+        let adjacentBlock = blocks[adjacentIndex]
+        focusOffset = up ? (adjacentBlock.content as NSString).length : 0
+        focusedBlock = adjacentBlock.id
+        return true
+    }
+
     private func move(_ id: UUID, to destination: Int) {
         guard let index = blocks.firstIndex(where: { $0.id == id }), (0..<blocks.count).contains(destination), index != destination else { return }
         let before = snapshot()
@@ -233,6 +244,7 @@ private struct BlockRow: View {
     let onFocus: () -> Void
     let onReturn: (NSRange) -> Bool
     let onBackspace: () -> Bool
+    let onVerticalBoundary: (Bool) -> Bool
     let onDelete: () -> Void
     let onMove: (Int) -> Void
     let onDrop: (UUID) -> Void
@@ -256,7 +268,7 @@ private struct BlockRow: View {
                 .help("Drag to reorder block")
                 .accessibilityLabel("Drag to reorder block")
 
-            BlockTextEditor(text: $text, kind: block.kind, shouldFocus: isFocused, caretOffset: caretOffset, onFocus: onFocus, onReturn: onReturn, onBackspace: onBackspace)
+            BlockTextEditor(text: $text, kind: block.kind, shouldFocus: isFocused, caretOffset: caretOffset, onFocus: onFocus, onReturn: onReturn, onBackspace: onBackspace, onVerticalBoundary: onVerticalBoundary)
                 .frame(maxWidth: .infinity, minHeight: 30)
 
             Button(action: onDelete) {

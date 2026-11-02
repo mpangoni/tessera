@@ -37,6 +37,7 @@ struct BlockTextEditor: NSViewRepresentable {
     let onFocus: () -> Void
     let onReturn: (NSRange) -> Bool
     let onBackspace: () -> Bool
+    let onVerticalBoundary: (Bool) -> Bool
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
@@ -91,7 +92,9 @@ struct BlockTextEditor: NSViewRepresentable {
                 if range.location == 0 && range.length == 0 { return context.coordinator.parent.onBackspace() }
             }
             if (event.keyCode == 126 || event.keyCode == 125), modifiers.isEmpty,
-               editor.isAtVerticalBlockBoundary(up: event.keyCode == 126) { return true }
+               editor.isAtVerticalBlockBoundary(up: event.keyCode == 126) {
+                return context.coordinator.parent.onVerticalBoundary(event.keyCode == 126)
+            }
             return false
         }
         editor.focusHandler = { context.coordinator.parent.onFocus() }
