@@ -1,24 +1,25 @@
-# Tessera v0.1 implementation report
+# Tessera v0.1.2 implementation report
 
 ## Implemented
 
 - Created a macOS app project and a portable `TesseraCore` Swift package, with the specification, repository guidance, and roadmap under `docs/`.
 - Added a Sendable block model and testable insert, update, split, safe merge, delete, and move commands.
-- Added a UTF-8 Markdown codec for paragraphs, headings, list items, blockquotes, horizontal rules, and fenced code. It retains exact original source for no-edit saves and preserves unsupported or nested constructs as opaque blocks.
-- Added a SwiftUI document editor with multiline text inputs, block insertion/deletion, visual drag targets, and single-block reordering. It uses SwiftUI's native document group for New/Open/Save/Save As and multiple document windows.
+- Added selected-range splitting, ordered/unordered list continuation, merge caret offsets, and model snapshot undo/redo registration.
+- Added a UTF-8 Markdown codec for paragraphs, headings, list items, blockquotes, horizontal rules, and fenced code. It retains exact original source for no-edit saves, preserves unsupported or nested constructs as opaque blocks, and round-trips empty leading/trailing paragraphs after edits.
+- Added a native AppKit text input bridge for cursor/selection-aware Return and Backspace, plus hover-only drag/delete controls with keyboard move actions and single-block drag reordering. The plus controls are removed.
+- The app remains a SwiftUI `FileDocument` / `DocumentGroup` document application for New/Open/Save/Save As and multiple windows.
+- Bumped the app's marketing version to 0.1.2 and added the accepted refinements as SPEC-0002.
 - The Xcode project targets macOS 26.5, using SwiftUI `FileDocument` / `DocumentGroup`. The installed Xcode 26.6 SDK requires a direct standard Markdown UTI identifier in place of its unavailable `UTType.markdown` declaration.
 
 ## Verification
 
-- `swift test --package-path Packages/TesseraCore`: passed, 9 tests.
+- `swift test --package-path Packages/TesseraCore`: passed, 14 tests.
 - `xcodebuild -project Tessera.xcodeproj -scheme Tessera -destination 'platform=macOS' build`: passed against macOS 26.5 SDK.
-- Launched the resulting `.app` on macOS 26.5.2; the Tessera process started.
+- In an isolated app instance, verified selection split, Return at block end, Backspace merge caret placement, and native Undo/Redo. The app process launched on macOS 26.5.2.
 - `git diff --check`: passed.
 
 ## Remaining gaps and limitations
 
-- Only app process launch was verified. The manual editing, file lifecycle, VoiceOver, appearance, multiple-window, and long-document acceptance checks remain unverified.
-- The document adapter uses SwiftUI `FileDocument` because the requested Xcode 27 `Document` APIs are unavailable in Xcode 26.6. Native external-change conflict handling, autosave behavior, and undo integration therefore need verification and likely adjustment on Xcode 27.
-- The current editor provides multiline text fields and block-level add/delete/reorder, but does not yet implement the specified Return-to-split, Shift+Return, list continuation/termination, code-block newline contract, safe Backspace merge, caret transfer, or native undo/redo for block operations.
-- Drag/drop and keyboard behavior, VoiceOver, appearance, two-window isolation, Save As extension behavior, and long-document scrolling have not been manually tested.
+- Hover reveal/hide, drag/drop, deletion, app-level save/reopen, VoiceOver, light/dark, two-window isolation, Save As extension behavior, and 300-block scrolling still need UI verification. Core tests cover Markdown round-trips for empty blocks and edited split/merge output.
+- Native external-change conflict handling and autosave behavior need app-level verification.
 - Complex Markdown is intentionally opaque. Editing supported blocks can canonicalize those blocks and their surrounding separators; only no-edit saves promise byte-for-byte retention.

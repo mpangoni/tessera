@@ -44,17 +44,38 @@ public enum MarkdownCodec {
             }
             let chosen = Array(lines[start..<i])
             let raw = chosen.map { $0.text + $0.ending }.joined()
+            if blocks.isEmpty, !separator.isEmpty {
+                blocks.append(TesseraBlock(kind: .paragraph, content: "", source: ""))
+            }
             blocks.append(parseBlock(chosen.map(\.text).joined(separator: "\n"), raw: raw, separator: separator))
             separator = ""
         }
-        return BlockDocument(blocks: blocks, originalSource: source, lineEnding: eol, trailingSource: trailing)
+        var trailingSource = trailing
+        if !blocks.isEmpty, !trailingSource.isEmpty {
+            blocks.append(TesseraBlock(kind: .paragraph, content: "", source: trailingSource, precedingSeparator: eol + separator))
+            trailingSource = ""
+        }
+        return BlockDocument(blocks: blocks, originalSource: source, lineEnding: eol, trailingSource: trailingSource)
     }
 
     public static func encode(_ document: BlockDocument) -> String {
         if !document.hasBeenEdited, let source = document.originalSource { return source }
-        return document.blocks.map { block in
-            block.precedingSeparator + (block.isDirty || block.source == nil ? serialize(block, eol: document.lineEnding) : block.source!)
+        return document.blocks.enumerated().map { index, block in
+            var separator = block.precedingSeparator
+            if index > 0, document.blocks[index - 1].isDirty || (index > 0 && document.blocks[index - 1].source == nil) {
+                let needed = isSameListRun(document.blocks[index - 1].kind, block.kind) ? 1 : 2
+                let present = separator.components(separatedBy: document.lineEnding).count - 1
+                if present < needed { separator = String(repeating: document.lineEnding, count: needed - present) + separator }
+            }
+            return separator + (block.isDirty || block.source == nil ? serialize(block, eol: document.lineEnding) : block.source!)
         }.joined() + document.trailingSource
+    }
+
+    private static func isSameListRun(_ lhs: BlockKind, _ rhs: BlockKind) -> Bool {
+        switch (lhs, rhs) {
+        case (.unorderedListItem, .unorderedListItem), (.orderedListItem, .orderedListItem): true
+        default: false
+        }
     }
 
     private static func parseBlock(_ text: String, raw: String, separator: String) -> TesseraBlock {

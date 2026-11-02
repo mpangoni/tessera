@@ -50,3 +50,13 @@ import Testing
     #expect(output.contains(codeSource))
     #expect(output.contains(htmlSource))
 }
+
+@Test func emptyLeadingAndTrailingParagraphsSurviveEditedSerialization() throws {
+    for source in ["\n\nbody", "body\n\n"] {
+        var document = MarkdownCodec.decode(source)
+        #expect(document.blocks.count == 2)
+        try BlockEditorCommands.update(id: document.blocks.first(where: { !$0.content.isEmpty })!.id, content: "edited", in: &document)
+        let saved = MarkdownCodec.encode(document)
+        #expect(MarkdownCodec.decode(saved).blocks.count == 2)
+    }
+}

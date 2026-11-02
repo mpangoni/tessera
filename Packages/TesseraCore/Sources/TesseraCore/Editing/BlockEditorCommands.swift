@@ -30,14 +30,28 @@ public enum BlockEditorCommands {
     }
 
     public static func split(id: UUID, at offset: Int, in document: inout BlockDocument) throws -> UUID {
+        try split(id: id, replacing: offset..<offset, in: &document)
+    }
+
+    /// Replaces the selected character range with a block boundary.
+    @discardableResult
+    public static func split(id: UUID, replacing range: Range<Int>, in document: inout BlockDocument) throws -> UUID {
         guard let index = document.blocks.firstIndex(where: { $0.id == id }), isSplitable(document.blocks[index].kind) else { throw TesseraError.unsafeMerge }
         let text = document.blocks[index].content
-        guard offset >= 0 && offset <= text.count else { throw TesseraError.invalidBlockIndex }
-        let cut = text.index(text.startIndex, offsetBy: offset)
-        document.blocks[index].content = String(text[..<cut])
+        guard range.lowerBound >= 0, range.upperBound >= range.lowerBound, range.upperBound <= text.count else { throw TesseraError.invalidBlockIndex }
+        let start = text.index(text.startIndex, offsetBy: range.lowerBound)
+        let end = text.index(text.startIndex, offsetBy: range.upperBound)
+        document.blocks[index].content = String(text[..<start])
         document.blocks[index].isDirty = true
         document.blocks[index].source = nil
-        let added = TesseraBlock(kind: .paragraph, content: String(text[cut...]), precedingSeparator: document.lineEnding + document.lineEnding, isDirty: true)
+        let nextKind: BlockKind
+        switch document.blocks[index].kind {
+        case .unorderedListItem: nextKind = .unorderedListItem
+        case .orderedListItem(let number): nextKind = .orderedListItem(number: number + 1)
+        case .blockquote: nextKind = .blockquote
+        default: nextKind = .paragraph
+        }
+        let added = TesseraBlock(kind: nextKind, content: String(text[end...]), precedingSeparator: document.lineEnding + document.lineEnding, isDirty: true)
         document.blocks.insert(added, at: index + 1)
         document.hasBeenEdited = true
         return added.id
@@ -57,18 +71,21 @@ public enum BlockEditorCommands {
         return document.blocks.remove(at: index)
     }
 
-    public static func mergePrevious(id: UUID, in document: inout BlockDocument) throws {
+    @discardableResult
+    public static func mergePrevious(id: UUID, in document: inout BlockDocument) throws -> Int {
         guard let index = document.blocks.firstIndex(where: { $0.id == id }), index > 0,
               isMergeable(document.blocks[index - 1].kind), isMergeable(document.blocks[index].kind) else { throw TesseraError.unsafeMerge }
+        let joinOffset = document.blocks[index - 1].content.utf16.count
         document.blocks[index - 1].content += document.blocks[index].content
         document.blocks[index - 1].isDirty = true
         document.blocks[index - 1].source = nil
         document.blocks.remove(at: index)
         document.hasBeenEdited = true
+        return joinOffset
     }
 
     private static func isSplitable(_ kind: BlockKind) -> Bool {
-        switch kind { case .paragraph, .heading: true; default: false }
+        switch kind { case .paragraph, .heading, .unorderedListItem, .orderedListItem, .blockquote: true; default: false }
     }
     private static func isMergeable(_ kind: BlockKind) -> Bool {
         switch kind { case .paragraph, .heading, .unorderedListItem, .orderedListItem, .blockquote: true; default: false }
