@@ -10,6 +10,7 @@
 - Up/Down moves between visual lines within a block and transfers focus to the adjacent block at a block boundary. At the document boundary, native text-view behavior applies. Set the Launch Services multiple-instance prohibition key.
 - Added a compact top segmented switch between block editing and a native raw Markdown text editor. Both views edit the same document string; the bottom navigation area is intentionally empty.
 - The app remains a SwiftUI `FileDocument` / `DocumentGroup` document application for New/Open/Save/Save As and multiple windows.
+- Enabled Xcode's local ad-hoc code signing for the app target. This lets Launch Services validate and launch the app from Xcode without requiring a Developer ID certificate.
 - Bumped the app's marketing version to 0.1.2 and added the accepted refinements as SPEC-0002.
 - The Xcode project targets macOS 26.5, using SwiftUI `FileDocument` / `DocumentGroup`. The installed Xcode 26.6 SDK requires a direct standard Markdown UTI identifier in place of its unavailable `UTType.markdown` declaration.
 
@@ -17,6 +18,7 @@
 
 - `swift test --package-path Packages/TesseraCore`: passed, 14 tests.
 - `xcodebuild -project Tessera.xcodeproj -scheme Tessera -destination 'platform=macOS' build`: passed against macOS 26.5 SDK.
+- `codesign --verify --deep --strict` on the built app: passed; Xcode Run launched Tessera and attached the debugger.
 - In an isolated app instance, verified selection split, Return at block end, Backspace merge caret placement, and native Undo/Redo. The app process launched on macOS 26.5.2.
 - Confirmed the built Info.plist contains `LSMultipleInstancesProhibited = true`; a second test launch left one test-app process running.
 - `git diff --check`: passed.
@@ -25,4 +27,5 @@
 
 - Arrow-key boundary behavior, hover reveal/hide, drag/drop, deletion, app-level save/reopen, VoiceOver, light/dark, two-window isolation, Save As extension behavior, and 300-block scrolling still need UI verification. Core tests cover Markdown round-trips for empty blocks and edited split/merge output.
 - Native external-change conflict handling and autosave behavior need app-level verification.
+- The local build uses ad-hoc signing; Developer ID signing and notarization are not configured.
 - Complex Markdown is intentionally opaque. Editing supported blocks can canonicalize those blocks and their surrounding separators; only no-edit saves promise byte-for-byte retention.
