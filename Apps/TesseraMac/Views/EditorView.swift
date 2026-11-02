@@ -19,6 +19,7 @@ struct EditorView: View {
     var body: some View {
         VStack(spacing: 0) {
             HStack {
+                Spacer(minLength: 0)
                 Picker("Document view", selection: $editorMode) {
                     Text("Blocks").tag(EditorMode.blocks)
                     Text("Raw Markdown").tag(EditorMode.rawMarkdown)
@@ -27,13 +28,10 @@ struct EditorView: View {
                 .labelsHidden()
                 .fixedSize()
                 .accessibilityLabel("Document view")
-                Spacer(minLength: 0)
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 8)
             .background(.bar)
-
-            Divider()
 
             Group {
                 switch editorMode {
@@ -44,8 +42,6 @@ struct EditorView: View {
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-
-            Divider()
 
             HStack { Spacer(minLength: 0) }
                 .frame(height: 28)
