@@ -1,0 +1,52 @@
+import Foundation
+import Testing
+@testable import TesseraCore
+
+@Test func untouchedSourceIsByteForBytePreserved() {
+    for source in ["# Olá 🌱\n\nText **bold**\n", "one\r\n\r\ntwo\r\n", ""] {
+        let document = MarkdownCodec.decode(source)
+        #expect(MarkdownCodec.encode(document) == source)
+    }
+}
+
+@Test func recognizesBlockTypesAndKeepsUnsupportedConstructsOpaque() {
+    let source = "# Heading\n\n- first\n- second\n\n```swift\nprint(1)\n```\n\n| a | b |\n| - | - |\n| x | y |"
+    let document = MarkdownCodec.decode(source)
+    #expect(document.blocks.map(\.kind) == [.heading(level: 1), .unorderedListItem, .unorderedListItem, .fencedCode(language: "swift"), .rawMarkdown])
+    #expect(document.blocks[4].source?.contains("| a | b |") == true)
+}
+
+@Test func invalidUtf8IsRejected() {
+    #expect(throws: TesseraError.invalidUTF8) { try MarkdownCodec.decode(Data([0xFF, 0xFE])) }
+}
+
+@Test func recognizesRemainingBasicBlocks() {
+    let source = "# one\n## two\n### three\n#### four\n##### five\n###### six\n\n1. ordered\n\n> quote\n\n---"
+    let kinds = MarkdownCodec.decode(source).blocks.map(\.kind)
+    #expect(kinds == [.heading(level: 1), .heading(level: 2), .heading(level: 3), .heading(level: 4), .heading(level: 5), .heading(level: 6), .orderedListItem(number: 1), .blockquote, .horizontalRule])
+}
+
+@Test func editingSupportedBlockLeavesOpaqueSourceVerbatim() throws {
+    var document = MarkdownCodec.decode("Before\n\n<table>\n<tr><td>x</td></tr>\n</table>\n\nAfter")
+    let opaque = document.blocks[1].source!
+    try BlockEditorCommands.update(id: document.blocks[0].id, content: "Changed", in: &document)
+    let output = MarkdownCodec.encode(document)
+    #expect(output.contains(opaque))
+    #expect(output.contains("Changed"))
+}
+
+@Test func nestedListStaysInOneOpaqueBlock() {
+    let document = MarkdownCodec.decode("- parent\n  - child\n")
+    #expect(document.blocks.count == 1)
+    #expect(document.blocks[0].kind == .rawMarkdown)
+}
+
+@Test func movingOpaqueAndCodeBlocksKeepsTheirSource() throws {
+    var document = MarkdownCodec.decode("before\n\n```weird\na  `quote`\n```\n\n<table>x</table>\n\nafter")
+    let codeSource = document.blocks[1].source!
+    let htmlSource = document.blocks[2].source!
+    try BlockEditorCommands.move(id: document.blocks[2].id, to: 0, in: &document)
+    let output = MarkdownCodec.encode(document)
+    #expect(output.contains(codeSource))
+    #expect(output.contains(htmlSource))
+}
