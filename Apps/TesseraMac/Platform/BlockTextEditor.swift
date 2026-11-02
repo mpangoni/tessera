@@ -90,6 +90,8 @@ struct BlockTextEditor: NSViewRepresentable {
                 let range = editor.selectedRange()
                 if range.location == 0 && range.length == 0 { return context.coordinator.parent.onBackspace() }
             }
+            if (event.keyCode == 126 || event.keyCode == 125), modifiers.isEmpty,
+               editor.isAtVerticalBlockBoundary(up: event.keyCode == 126) { return true }
             return false
         }
         editor.focusHandler = { context.coordinator.parent.onFocus() }
@@ -143,5 +145,22 @@ final class TesseraNSTextView: NSTextView {
         let result = super.becomeFirstResponder()
         if result { focusHandler?() }
         return result
+    }
+
+    func isAtVerticalBlockBoundary(up: Bool) -> Bool {
+        guard let container = textContainer, let manager = layoutManager else { return false }
+        manager.ensureLayout(for: container)
+        let glyphs = manager.glyphRange(for: container)
+        guard glyphs.length > 0 else { return true }
+        let stringLength = (string as NSString).length
+        let selection = selectedRange()
+        let character = min(selection.location == stringLength ? max(0, stringLength - 1) : selection.location, max(0, stringLength - 1))
+        let currentGlyph = manager.glyphIndexForCharacter(at: character)
+        var currentLine = NSRange(location: 0, length: 0)
+        let currentRect = manager.lineFragmentRect(forGlyphAt: currentGlyph, effectiveRange: &currentLine)
+        let edgeGlyph = up ? glyphs.location : NSMaxRange(glyphs) - 1
+        var edgeLine = NSRange(location: 0, length: 0)
+        let edgeRect = manager.lineFragmentRect(forGlyphAt: edgeGlyph, effectiveRange: &edgeLine)
+        return abs(currentRect.minY - edgeRect.minY) < 0.5
     }
 }

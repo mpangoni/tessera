@@ -16,6 +16,8 @@ Refine block controls and keyboard editing while retaining the portable block mo
 - Return splits at the caret or selected range. Text before the range stays in the current block; selected text is removed; text after it moves to a new block. At the start/end this creates an empty block before/after. Focus and caret move to the new block's start.
 - Preserve native Shift+Return line breaks. Code and opaque Markdown blocks keep their safe in-block newline behavior.
 - Backspace at the start of a block merges it into a preceding block when the merge is safe. The caret moves to the exact join offset. Backspace in the first block is a no-op at the boundary.
+- Up/Down arrows move between visual lines within a block and stay within that block at its first/last visual line; they do not move keyboard focus into adjacent blocks.
+- Launch Services must not start a second Tessera instance while one is already running.
 - Keep block operations in platform-independent `TesseraCore` commands. Register split, merge, move, insert, and delete as named undoable operations through the macOS undo manager.
 - Preserve at least one editable paragraph when the last block is deleted.
 - Keep drag reordering and deletion available to keyboard and accessibility users.
@@ -30,6 +32,7 @@ Refine block controls and keyboard editing while retaining the portable block mo
 
 - Unit-test splitting at start, middle, end, and replacing a selection; list continuation; Unicode caret offsets; safe merge and first-block no-op; block ordering and IDs; empty-boundary block round-trips; and serialization after split/merge.
 - Verify in macOS UI: controls reveal/hide without shifting text, Return/Backspace caret behavior, undo/redo, drag/drop, delete, and save/reopen.
+- Verify that Up/Down at a block boundary leaves focus in the current block, and that Launch Services does not create a second running process.
 - Preserve light/dark appearance and VoiceOver keyboard access.
 
 ## Out of scope
