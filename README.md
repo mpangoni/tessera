@@ -4,7 +4,7 @@ Tessera is a local-first Markdown block editor. The portable `TesseraCore` Swift
 
 ## Requirements
 
-- Xcode 27 / Swift 6 and macOS 27 are the specified runtime. This machine has Xcode 26.6 and macOS 26.5.2; the app is set to a macOS 27 deployment target but can only be compiled against the installed macOS 26.5 SDK here.
+- The specification calls for macOS 27 / Xcode 27. The current Xcode project targets macOS 26.5 so it can run on this development machine; this compatibility adjustment should be revisited when validating the macOS 27 document APIs.
 
 ## Build and test
 
