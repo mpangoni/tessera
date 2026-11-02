@@ -6,7 +6,7 @@
 - Added a Sendable block model and testable insert, update, split, safe merge, delete, and move commands.
 - Added a UTF-8 Markdown codec for paragraphs, headings, list items, blockquotes, horizontal rules, and fenced code. It retains exact original source for no-edit saves and preserves unsupported or nested constructs as opaque blocks.
 - Added a SwiftUI document editor with multiline text inputs, block insertion/deletion, visual drag targets, and single-block reordering. It uses SwiftUI's native document group for New/Open/Save/Save As and multiple document windows.
-- The Xcode project targets macOS 26.5 so the app can launch on the available development OS. This is a deliberate compatibility deviation from the macOS 27 target in SPEC-0001. The installed Xcode 26.6 SDK requires a direct standard Markdown UTI identifier in place of its unavailable `UTType.markdown` declaration.
+- The Xcode project targets macOS 26.5, using SwiftUI `FileDocument` / `DocumentGroup`. The installed Xcode 26.6 SDK requires a direct standard Markdown UTI identifier in place of its unavailable `UTType.markdown` declaration.
 
 ## Verification
 

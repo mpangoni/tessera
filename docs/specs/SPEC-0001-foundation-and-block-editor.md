@@ -41,15 +41,15 @@ A Tessera *document* is a container of ordered blocks. A block is the smallest i
 
 - **Language:** Swift 6, with strict concurrency checking where practical.
 - **UI:** SwiftUI, with small, isolated AppKit bridges only where native text input, focus, caret handling, or drag-and-drop behavior cannot be implemented reliably using SwiftUI alone.
-- **First deployment target:** macOS 27+, using Xcode 27+ and SwiftUI's modern `Document` / `DocumentGroup` document infrastructure. This is an explicit MVP decision; it excludes older macOS releases until a compatibility spec is approved.
+- **First deployment target:** macOS 26.5+, using Xcode 26.6+ and SwiftUI's native `FileDocument` / `DocumentGroup` document infrastructure available in the supported toolchain.
 - **Future platform target:** iPadOS/iOS; share the model, Markdown codec, editor commands, and most view composition. Use platform-specific input adapters rather than embedding AppKit logic into the domain model.
-- **Persistence:** local UTF-8 Markdown, via coordinated system document operations. Use `UTType.markdown`.
+- **Persistence:** local UTF-8 Markdown, via coordinated system document operations. Use the system Markdown uniform type identifier.
 - **Dependencies:** prefer Apple frameworks; `swift-markdown` is permitted for parsing, with a pinned version. Do not use its normalized formatter for untouched source without testing content fidelity.
 - **No backend, account, telemetry, or analytics service.**
 
 ### Document API boundary
 
-Keep Apple document-framework conformance in the app/document-infrastructure layer. `TesseraCore` should work on strings and block models, not `DocumentGroup`, `NSDocument`, file URLs, or AppKit. On macOS 27, use the `Document` protocol with a reference-backed observable document and register undo actions for user changes so native autosave works correctly. Preserve system Save and Save As semantics; do not hand-roll independent file saving inside the editor view.
+Keep Apple document-framework conformance in the app/document-infrastructure layer. `TesseraCore` should work on strings and block models, not `DocumentGroup`, `NSDocument`, file URLs, or AppKit. Use SwiftUI's native document infrastructure and register undo actions for user changes so native autosave works correctly. Preserve system Save and Save As semantics; do not hand-roll independent file saving inside the editor view.
 
 ## 4. Domain model
 
@@ -279,7 +279,7 @@ Keep these principles stable:
 
 ## 13. Codex execution brief
 
-> Implement `docs/specs/SPEC-0001-foundation-and-block-editor.md` as the first release of Tessera. Start with the foundation and model tests; build in the order specified in Section 10. Use native SwiftUI document handling on macOS 27, keep the core platform-independent, and preserve unsupported Markdown verbatim. Do not implement future-scope features. Run builds and tests after each phase, correct failures, and finish with an implementation report listing passing checks, manual checks, and remaining limitations. Where the spec leaves room for interpretation, choose the smallest data-safe behavior and document it.
+> Implement `docs/specs/SPEC-0001-foundation-and-block-editor.md` as the first release of Tessera. Start with the foundation and model tests; build in the order specified in Section 10. Use native SwiftUI document handling on macOS 26.5 or later, keep the core platform-independent, and preserve unsupported Markdown verbatim. Do not implement future-scope features. Run builds and tests after each phase, correct failures, and finish with an implementation report listing passing checks, manual checks, and remaining limitations. Where the spec leaves room for interpretation, choose the smallest data-safe behavior and document it.
 
 ## 14. References and rationale
 
