@@ -24,14 +24,13 @@ struct EditorView: View {
         VStack(spacing: 0) {
             HStack {
                 Spacer(minLength: 0)
-                Picker("Document view", selection: $editorMode) {
-                    Text("Blocks").tag(EditorMode.blocks)
-                    Text("Raw Markdown").tag(EditorMode.rawMarkdown)
-                }
-                .pickerStyle(.segmented)
-                .labelsHidden()
+                Toggle("Raw Markdown", isOn: Binding(
+                    get: { editorMode == .rawMarkdown },
+                    set: { editorMode = $0 ? .rawMarkdown : .blocks }
+                ))
+                .toggleStyle(.switch)
                 .fixedSize()
-                .accessibilityLabel("Document view")
+                .accessibilityHint("Switch between block and raw Markdown editing")
             }
             .padding(.horizontal, 20)
             .padding(.vertical, 8)
