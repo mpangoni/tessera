@@ -1,13 +1,17 @@
 import Foundation
 
+/// Reads Markdown into editable blocks and writes the blocks back without losing untouched source.
 public enum MarkdownCodec {
+    /// A line without its ending, so parsing can classify text while keeping line endings available.
     private struct Line { var text: String; var ending: String }
 
+    /// Decodes file bytes as UTF-8. Invalid text is rejected instead of silently replacing characters.
     public static func decode(_ data: Data) throws -> BlockDocument {
         guard let source = String(data: data, encoding: .utf8) else { throw TesseraError.invalidUTF8 }
         return decode(source)
     }
 
+    /// Breaks Markdown text into top-level blocks and retains the exact source for later preservation.
     public static func decode(_ source: String) -> BlockDocument {
         let eol = source.contains("\r\n") ? "\r\n" : "\n"
         var lines: [Line] = []
@@ -28,6 +32,7 @@ public enum MarkdownCodec {
                 i += 1; continue
             }
             let start = i
+            // Keep whole code fences and list runs together before deciding what kind of block they are.
             if let fence = fenceMarker(lines[i].text) {
                 i += 1
                 while i < lines.count {
@@ -58,6 +63,7 @@ public enum MarkdownCodec {
         return BlockDocument(blocks: blocks, originalSource: source, lineEnding: eol, trailingSource: trailingSource)
     }
 
+    /// Returns the original text unchanged until an edit occurs; after edits, writes each block in order.
     public static func encode(_ document: BlockDocument) -> String {
         if !document.hasBeenEdited, let source = document.originalSource { return source }
         return document.blocks.enumerated().map { index, block in
@@ -71,6 +77,7 @@ public enum MarkdownCodec {
         }.joined() + document.trailingSource
     }
 
+    /// Adjacent items in one list need one newline; other block types need a blank line between them.
     private static func isSameListRun(_ lhs: BlockKind, _ rhs: BlockKind) -> Bool {
         switch (lhs, rhs) {
         case (.unorderedListItem, .unorderedListItem), (.orderedListItem, .orderedListItem): true
@@ -78,6 +85,7 @@ public enum MarkdownCodec {
         }
     }
 
+    /// Recognizes supported simple blocks. Complex or ambiguous Markdown stays as raw source.
     private static func parseBlock(_ text: String, raw: String, separator: String) -> TesseraBlock {
         let first = text.components(separatedBy: "\n")[0]
         if let fence = fenceMarker(first) {
@@ -106,16 +114,19 @@ public enum MarkdownCodec {
         return TesseraBlock(kind: .paragraph, content: text.replacingOccurrences(of: "\n", with: " "), source: raw, precedingSeparator: separator)
     }
 
+    /// Detects list markers used to keep a list and its indented continuation on the same block span.
     private static func isListLine(_ line: String) -> Bool {
         line.range(of: #"^\s*(?:[-*+]|\d+[.)])\s+"#, options: .regularExpression) != nil
     }
 
+    /// These markers start a new top-level block instead of continuing the paragraph above them.
     private static func isStandaloneBlock(_ line: String) -> Bool {
         isListLine(line) || line.range(of: #"^\s{0,3}#{1,6}\s+"#, options: .regularExpression) != nil ||
         line.range(of: #"^\s{0,3}>\s?"#, options: .regularExpression) != nil ||
         line.range(of: #"^(?:---+|\*\*\*+|___+)$"#, options: .regularExpression) != nil
     }
 
+    /// Finds a fenced-code delimiter and the optional language text after it.
     private static func fenceMarker(_ line: String) -> (marker: String, info: String)? {
         guard let range = line.range(of: #"^\s{0,3}(`{3,}|~{3,})(.*)$"#, options: .regularExpression) else { return nil }
         let match = String(line[range]).trimmingCharacters(in: .whitespaces)
@@ -123,6 +134,7 @@ public enum MarkdownCodec {
         return (marker, String(match.dropFirst(marker.count)).trimmingCharacters(in: .whitespaces))
     }
 
+    /// Creates Markdown for an edited block. Code fences grow if needed so their contents cannot close them.
     private static func serialize(_ block: TesseraBlock, eol: String) -> String {
         switch block.kind {
         case .paragraph: return block.content

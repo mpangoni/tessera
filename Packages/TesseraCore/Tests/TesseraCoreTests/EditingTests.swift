@@ -2,6 +2,7 @@ import Foundation
 import Testing
 @testable import TesseraCore
 
+/// Splitting, moving, merging, and deleting changes the ordered block list as expected.
 @Test func splitMoveDeleteAndSafeMerge() throws {
     var document = BlockDocument(blocks: [
         TesseraBlock(kind: .paragraph, content: "alpha beta"),
@@ -19,12 +20,14 @@ import Testing
     #expect(document.blocks.count == 1)
 }
 
+/// Structured code blocks cannot be merged into ordinary text blocks.
 @Test func nonTextMergeIsRefused() throws {
     var document = BlockDocument(blocks: [TesseraBlock(kind: .fencedCode(language: nil), content: "code"), TesseraBlock(kind: .paragraph, content: "text")])
     #expect(throws: TesseraError.unsafeMerge) { try BlockEditorCommands.mergePrevious(id: document.blocks[1].id, in: &document) }
     #expect(document.blocks.count == 2)
 }
 
+/// Return replaces selected text with a block boundary while keeping each block's identity.
 @Test func splitReplacesSelectedTextAndPreservesOrder() throws {
     var document = BlockDocument(blocks: [TesseraBlock(kind: .paragraph, content: "Hello beautiful world")])
     let oldID = document.blocks[0].id
@@ -34,6 +37,7 @@ import Testing
     #expect(document.blocks[1].id == newID)
 }
 
+/// The merge command returns a caret offset that works with AppKit's UTF-16 selection ranges.
 @Test func mergeReturnsExactUTF16CaretJoinPoint() throws {
     var document = BlockDocument(blocks: [TesseraBlock(kind: .paragraph, content: "Olá 🌱"), TesseraBlock(kind: .paragraph, content: " world")])
     let caret = try BlockEditorCommands.mergePrevious(id: document.blocks[1].id, in: &document)
@@ -41,6 +45,7 @@ import Testing
     #expect(document.blocks.map(\.content) == ["Olá 🌱 world"])
 }
 
+/// Splitting list items continues the list and advances ordered-list numbering.
 @Test func splitOnListContinuesListAndNumbering() throws {
     var unordered = BlockDocument(blocks: [TesseraBlock(kind: .unorderedListItem, content: "alpha beta")])
     let nextUnordered = try BlockEditorCommands.split(id: unordered.blocks[0].id, at: 5, in: &unordered)
@@ -52,6 +57,7 @@ import Testing
     #expect(ordered.blocks[1].kind == .orderedListItem(number: 5))
 }
 
+/// A split followed by a merge saves valid Markdown and restores the original block contents.
 @Test func splitThenMergeSerializesWithBlankParagraphBoundary() throws {
     var document = MarkdownCodec.decode("Hello beautiful world\n\nSecond paragraph\n")
     let first = document.blocks[0].id

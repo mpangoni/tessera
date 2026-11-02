@@ -1,9 +1,12 @@
 import SwiftUI
 import TesseraCore
 
+/// Owns one document's block model and connects edits to the Markdown string macOS saves.
 struct EditorView: View {
     @Binding var document: TesseraDocument
     @Environment(\.undoManager) private var undoManager
+
+    // View state and preservation details used while moving between raw text and block editing.
     @State private var editorMode: EditorMode = .blocks
     @State private var blocks: [TesseraBlock] = []
     @State private var originalSource: String?
@@ -18,10 +21,12 @@ struct EditorView: View {
     @State private var focusedControlsBlockID: UUID?
     @StateObject private var undoCoordinator = BlockUndoCoordinator()
 
+    /// Keyboard-focused controls take priority; otherwise only the row currently under the pointer is shown.
     private var controlsBlockID: UUID? { focusedControlsBlockID ?? hoveredBlockID }
 
     var body: some View {
         VStack(spacing: 0) {
+            // The icon-only segmented control changes how the same Markdown document is displayed.
             HStack {
                 Spacer(minLength: 0)
                 Picker("Document view", selection: $editorMode) {
@@ -54,6 +59,7 @@ struct EditorView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
 
+            // Keep a small empty bottom bar reserved for future document actions.
             HStack { Spacer(minLength: 0) }
                 .frame(height: 28)
                 .background(.bar)
@@ -69,6 +75,7 @@ struct EditorView: View {
         }
     }
 
+    /// Builds the movable block rows and connects their actions to document-level edit commands.
     private var blockEditor: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 12) {
@@ -111,6 +118,7 @@ struct EditorView: View {
         }
     }
 
+    /// Shows the actual Markdown string so the user can edit syntax directly.
     private var rawMarkdownEditor: some View {
         TextEditor(text: $document.markdown)
             .font(.system(.body, design: .monospaced))
@@ -120,6 +128,8 @@ struct EditorView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 
+    /// Parses the current Markdown and resets the in-memory edit state from that source.
+    /// Empty files get one temporary paragraph so there is always somewhere to type.
     private func load() {
         let model = MarkdownCodec.decode(document.markdown)
         blocks = model.blocks.isEmpty ? [TesseraBlock(kind: .paragraph, content: "")] : model.blocks
@@ -130,6 +140,7 @@ struct EditorView: View {
         lastPublished = document.markdown
     }
 
+    /// Serializes the edited blocks and publishes the result to the document macOS saves.
     private func publish() {
         var model = currentDocument()
         model.hasBeenEdited = true
@@ -139,10 +150,12 @@ struct EditorView: View {
         hasBeenEdited = true
     }
 
+    /// Packages the visible blocks with source-preservation details for the Markdown codec.
     private func currentDocument() -> BlockDocument {
         BlockDocument(blocks: blocks, originalSource: originalSource, lineEnding: lineEnding, trailingSource: trailingSource, hasBeenEdited: hasBeenEdited)
     }
 
+    /// Gives a text view a live binding for one block, routing changes through the core edit command.
     private func contentBinding(for block: TesseraBlock) -> Binding<String> {
         Binding(
             get: { blocks.first(where: { $0.id == block.id })?.content ?? "" },
@@ -158,6 +171,8 @@ struct EditorView: View {
         )
     }
 
+    /// Splits a block at the current selection, then focuses the new block and records an undo step.
+    /// NSTextView selections use UTF-16 ranges, so this converts the range before calling TesseraCore.
     private func split(_ block: TesseraBlock, selection: NSRange) -> Bool {
         var before = snapshot()
         before.focusedBlock = block.id
@@ -178,6 +193,7 @@ struct EditorView: View {
         } catch { return false }
     }
 
+    /// Joins this block to the preceding one when Backspace is pressed at its start.
     private func mergePrevious(_ block: TesseraBlock) -> Bool {
         guard let index = blocks.firstIndex(where: { $0.id == block.id }), index > 0 else { return false }
         let previous = blocks[index - 1]
@@ -197,6 +213,7 @@ struct EditorView: View {
         } catch { return false }
     }
 
+    /// Deletes a block, or clears and resets it when it is the document's last remaining block.
     private func remove(_ id: UUID) {
         let before = snapshot()
         var model = before.document
@@ -218,11 +235,13 @@ struct EditorView: View {
         } catch { assertionFailure("Could not remove block: \(error)") }
     }
 
+    /// Moves a block by a relative amount, as used by the accessibility Move Up/Down actions.
     private func move(_ id: UUID, by distance: Int) {
         guard let index = blocks.firstIndex(where: { $0.id == id }) else { return }
         move(id, to: index + distance)
     }
 
+    /// Moves focus across a block boundary and places the caret at the matching edge of that block.
     private func moveAcrossBoundary(from id: UUID, up: Bool) -> Bool {
         guard let index = blocks.firstIndex(where: { $0.id == id }) else { return false }
         let adjacentIndex = up ? index - 1 : index + 1
@@ -233,6 +252,7 @@ struct EditorView: View {
         return true
     }
 
+    /// Reorders a block to a specific destination and registers the change with UndoManager.
     private func move(_ id: UUID, to destination: Int) {
         guard let index = blocks.firstIndex(where: { $0.id == id }), (0..<blocks.count).contains(destination), index != destination else { return }
         let before = snapshot()
@@ -246,6 +266,7 @@ struct EditorView: View {
         } catch { assertionFailure("Could not move block: \(error)") }
     }
 
+    /// Replaces all in-memory document fields after a core command or undo operation.
     private func apply(_ model: BlockDocument) {
         blocks = model.blocks.isEmpty ? [TesseraBlock(kind: .paragraph, content: "")] : model.blocks
         originalSource = model.originalSource
@@ -254,10 +275,12 @@ struct EditorView: View {
         hasBeenEdited = model.hasBeenEdited
     }
 
+    /// Captures both document contents and the current text cursor so undo restores the editing position.
     private func snapshot() -> EditorSnapshot {
         EditorSnapshot(document: currentDocument(), focusedBlock: focusedBlock, caretOffset: focusOffset)
     }
 
+    /// Connects UndoManager callbacks to SwiftUI state and the saved Markdown string.
     private func configureUndoRestoration() {
         let blocks = $blocks
         let originalSource = $originalSource
@@ -283,11 +306,13 @@ struct EditorView: View {
     }
 }
 
+/// The two ways Tessera can show and edit the same Markdown source.
 private enum EditorMode: Hashable {
     case blocks
     case rawMarkdown
 }
 
+/// A restorable point in editing, including which block had focus and the caret offset.
 private struct EditorSnapshot {
     var document: BlockDocument
     var focusedBlock: UUID?
@@ -295,10 +320,12 @@ private struct EditorSnapshot {
 }
 
 @MainActor
+/// Registers block-level changes with the document window's native undo manager.
 private final class BlockUndoCoordinator: ObservableObject {
     weak var manager: UndoManager?
     var restore: ((EditorSnapshot) -> Void)?
 
+    /// Registers a reversible pair of snapshots under a readable Undo menu name.
     func register(from: EditorSnapshot, to: EditorSnapshot, actionName: String) {
         guard let manager else { return }
         manager.registerUndo(withTarget: self) { target in
@@ -309,6 +336,7 @@ private final class BlockUndoCoordinator: ObservableObject {
     }
 }
 
+/// One block's text editor and unobtrusive drag/delete controls.
 private struct BlockRow: View {
     let block: TesseraBlock
     @Binding var text: String
@@ -330,6 +358,7 @@ private struct BlockRow: View {
     @State private var deleteHovered = false
     @FocusState private var deleteFocused: Bool
 
+    /// Controls appear for the single active row, coordinated by `EditorView`.
     private var controlsVisible: Bool { areControlsVisible }
 
     var body: some View {

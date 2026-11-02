@@ -2,20 +2,25 @@ import AppKit
 import SwiftUI
 import TesseraCore
 
+/// Adds mouse-enter/exit tracking to a SwiftUI row without intercepting clicks or text input.
 struct BlockHoverTracker: NSViewRepresentable {
     let onHover: (Bool) -> Void
+    /// Creates the AppKit view that reports whether the pointer is over the row.
     func makeNSView(context: Context) -> HoverTrackingView {
         let view = HoverTrackingView()
         view.onHover = onHover
         return view
     }
+    /// Keeps the callback current when SwiftUI refreshes this representable.
     func updateNSView(_ nsView: HoverTrackingView, context: Context) { nsView.onHover = onHover }
 }
 
+/// AppKit's tracking-area view used by `BlockHoverTracker`.
 final class HoverTrackingView: NSView {
     var onHover: ((Bool) -> Void)?
     private var trackingArea: NSTrackingArea?
 
+    /// Rebuilds the tracking area when the view moves or its visible region changes.
     override func updateTrackingAreas() {
         if let trackingArea { removeTrackingArea(trackingArea) }
         let area = NSTrackingArea(rect: .zero, options: [.mouseEnteredAndExited, .activeAlways, .inVisibleRect], owner: self, userInfo: nil)
@@ -24,11 +29,15 @@ final class HoverTrackingView: NSView {
         super.updateTrackingAreas()
     }
 
+    /// The pointer entered this block row.
     override func mouseEntered(with event: NSEvent) { onHover?(true) }
+    /// The pointer left this block row.
     override func mouseExited(with event: NSEvent) { onHover?(false) }
+    /// Let clicks pass through to the editor and its controls.
     override func hitTest(_ point: NSPoint) -> NSView? { nil }
 }
 
+/// Wraps an NSTextView so SwiftUI blocks keep native macOS text selection and keyboard behavior.
 struct BlockTextEditor: NSViewRepresentable {
     @Binding var text: String
     let kind: BlockKind
@@ -39,8 +48,10 @@ struct BlockTextEditor: NSViewRepresentable {
     let onBackspace: () -> Bool
     let onVerticalBoundary: (Bool) -> Bool
 
+    /// Builds a coordinator that forwards native text changes back to the SwiftUI binding.
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
+    /// Creates the text storage, layout manager, and editable AppKit text view for one block.
     func makeNSView(context: Context) -> TesseraNSTextView {
         let storage = NSTextStorage()
         let layoutManager = NSLayoutManager()
@@ -73,6 +84,7 @@ struct BlockTextEditor: NSViewRepresentable {
         return editor
     }
 
+    /// Syncs SwiftUI state into the native view and installs block-aware keyboard handling.
     func updateNSView(_ editor: TesseraNSTextView, context: Context) {
         context.coordinator.parent = self
         if editor.string != text {
@@ -86,11 +98,13 @@ struct BlockTextEditor: NSViewRepresentable {
         editor.keyHandler = { [weak editor] event in
             guard let editor else { return false }
             let modifiers = event.modifierFlags.intersection([.command, .control, .option, .shift])
+            // Plain Return splits a block; Backspace at offset zero merges it with the previous block.
             if event.keyCode == 36 && modifiers.isEmpty { return context.coordinator.parent.onReturn(editor.selectedRange()) }
             if event.keyCode == 51 && modifiers.isEmpty {
                 let range = editor.selectedRange()
                 if range.location == 0 && range.length == 0 { return context.coordinator.parent.onBackspace() }
             }
+            // At a visual edge, let the document view move focus to the adjacent block.
             if (event.keyCode == 126 || event.keyCode == 125), modifiers.isEmpty,
                editor.isAtVerticalBlockBoundary(up: event.keyCode == 126) {
                 return context.coordinator.parent.onVerticalBoundary(event.keyCode == 126)
@@ -98,6 +112,7 @@ struct BlockTextEditor: NSViewRepresentable {
             return false
         }
         editor.focusHandler = { context.coordinator.parent.onFocus() }
+        // SwiftUI may recreate this row after a split or merge. Restore focus and the requested caret.
         if shouldFocus, editor.window?.firstResponder !== editor {
             DispatchQueue.main.async { [weak editor] in
                 guard let editor, let window = editor.window, window.firstResponder !== editor else { return }
@@ -108,6 +123,7 @@ struct BlockTextEditor: NSViewRepresentable {
         }
     }
 
+    /// Sizes the text view to fit its wrapped lines so a block grows instead of scrolling internally.
     func sizeThatFits(_ proposal: ProposedViewSize, nsView: TesseraNSTextView, context: Context) -> CGSize? {
         guard let width = proposal.width, let container = nsView.textContainer, let manager = nsView.layoutManager else { return nil }
         let measuredWidth = max(80, width)
@@ -117,6 +133,7 @@ struct BlockTextEditor: NSViewRepresentable {
         return CGSize(width: measuredWidth, height: max(30, ceil(contentHeight)))
     }
 
+    /// Uses larger type for headings and monospaced type for code blocks.
     private func font(for kind: BlockKind) -> NSFont {
         switch kind {
         case .heading(let level): .systemFont(ofSize: max(16, 30 - CGFloat(level * 2)), weight: .semibold)
@@ -125,9 +142,11 @@ struct BlockTextEditor: NSViewRepresentable {
         }
     }
 
+    /// NSTextView calls this object when the user changes text with the keyboard.
     final class Coordinator: NSObject, NSTextViewDelegate {
         var parent: BlockTextEditor
         init(_ parent: BlockTextEditor) { self.parent = parent }
+        /// Publishes native edits to SwiftUI, which then updates the block model and Markdown document.
         func textDidChange(_ notification: Notification) {
             guard let editor = notification.object as? NSTextView, editor.string != parent.text else { return }
             parent.text = editor.string
@@ -135,21 +154,26 @@ struct BlockTextEditor: NSViewRepresentable {
     }
 }
 
+/// NSTextView subclass that gives Tessera first chance to handle block-level key presses.
 final class TesseraNSTextView: NSTextView {
     var keyHandler: ((NSEvent) -> Bool)?
     var focusHandler: (() -> Void)?
 
+    /// Run Tessera's key handler first; use normal AppKit text editing for unhandled keys.
     override func keyDown(with event: NSEvent) {
         if keyHandler?(event) == true { return }
         super.keyDown(with: event)
     }
 
+    /// Reports focus changes so the document view knows which block is active.
     override func becomeFirstResponder() -> Bool {
         let result = super.becomeFirstResponder()
         if result { focusHandler?() }
         return result
     }
 
+    /// Checks whether the caret is on the first or last rendered line of this block.
+    /// The layout manager measures visual lines, including lines created by text wrapping.
     func isAtVerticalBlockBoundary(up: Bool) -> Bool {
         guard let container = textContainer, let manager = layoutManager else { return false }
         manager.ensureLayout(for: container)
