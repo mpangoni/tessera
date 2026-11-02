@@ -18,3 +18,7 @@ Open `Tessera.xcodeproj` in Xcode to run the app. The source-of-truth product sp
 See [`docs/implementation-report.md`](docs/implementation-report.md) for the implemented scope and validation gaps.
 
 Refinement scope for release 0.1.2 is recorded in [`SPEC-0002`](docs/specs/SPEC-0002-block-editor-refinements.md).
+
+## Sample documents
+
+Open [`Samples/Alice-in-Wonderland.md`](Samples/Alice-in-Wonderland.md) in Tessera to try the block editor with a short Markdown adaptation of the opening of Lewis Carroll's *Alice's Adventures in Wonderland*.
