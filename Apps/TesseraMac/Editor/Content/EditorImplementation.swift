@@ -2,7 +2,7 @@ import SwiftUI
 
 /// The shared metadata every document editor contributes to the mode picker.
 ///
-/// Keeping this contract small lets `MainEditorView` coordinate different editor
+/// Keeping this contract small lets `MainContentView` coordinate different editor
 /// experiences without needing to know how each one renders its content.
 protocol EditorImplementation: View {
     static var mode: EditorMode { get }

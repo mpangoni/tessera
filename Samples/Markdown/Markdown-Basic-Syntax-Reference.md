@@ -1,11 +1,12 @@
 # Markdown Basic Syntax Reference
 
+
 A compact reference for common Markdown elements. Each section shows source syntax in a code sample, followed by a rendered example where that makes the result clearer.
 
-This guide follows the [Markdown Guide's Basic Syntax reference](https://www.markdownguide.org/basic-syntax/). Markdown processors differ in a few details, so check the target app when exact rendering matters.
+This guide follows the [Markdown Guide’s Basic Syntax reference](https://www.markdownguide.org/basic-syntax/). Markdown processors differ in a few details, so check the target app when exact rendering matters.
 
+——
 
-—
 
 ## Headings
 
@@ -68,6 +69,12 @@ Start quoted lines with `>`. Put the marker on blank lines between quoted paragr
 > A blank quoted line keeps the next paragraph inside the quote.
 ```
 
+
+> A short quotation can span more than one line. 
+>
+> A blank quoted line keeps the next paragraph inside the quote.
+
+
 Quotes can be nested by adding another marker:
 
 ```markdown
@@ -75,6 +82,11 @@ Quotes can be nested by adding another marker:
 >
 > > Nested quote
 ```
+
+> Outer quote
+>
+> > Nested quote
+
 
 Blockquotes can also contain other Markdown, such as a heading or list:
 
@@ -84,6 +96,12 @@ Blockquotes can also contain other Markdown, such as a heading or list:
 > - Keep related points together.
 > - Use a blank quoted line before a new paragraph.
 ```
+
+> ### Notes
+>
+> - Keep related points together.
+> - Use a blank quoted line before a new paragraph.
+
 
 ## Lists
 

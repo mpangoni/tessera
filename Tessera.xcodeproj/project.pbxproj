@@ -7,31 +7,31 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A10000000000000000000026 /* Editor/Navigation/EditorTopBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000028 /* Editor/Navigation/EditorTopBar.swift */; };
-		A10000000000000000000027 /* Editor/Navigation/EditorBottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000029 /* Editor/Navigation/EditorBottomBar.swift */; };
-		A10000000000000000000039 /* BlockDocumentEditorSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000040 /* BlockDocumentEditorSession.swift */; };
 		A10000000000000000000008 /* TesseraApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000012 /* TesseraApp.swift */; };
-		A10000000000000000000009 /* Documents/MarkdownDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000013 /* Documents/MarkdownDocument.swift */; };
-		A1000000000000000000000A /* Editor/MainEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000014 /* Editor/MainEditorView.swift */; };
-		A10000000000000000000020 /* EditorImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000023 /* EditorImplementation.swift */; };
-		A10000000000000000000021 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000024 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift */; };
-		A10000000000000000000022 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000025 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift */; };
+		A10000000000000000000009 /* MarkdownDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000013 /* MarkdownDocument.swift */; };
+		A1000000000000000000000A /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000014 /* MainContentView.swift */; };
 		A1000000000000000000000B /* TesseraCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000006 /* TesseraCore */; };
-		A1000000000000000000001E /* Platform/AppKit/BlockTextEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001D /* Platform/AppKit/BlockTextEditor.swift */; };
+		A10000000000000000000020 /* EditorImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000023 /* EditorImplementation.swift */; };
+		A10000000000000000000021 /* BlockDocumentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000024 /* BlockDocumentEditorView.swift */; };
+		A10000000000000000000022 /* RawMarkdownEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000025 /* RawMarkdownEditorView.swift */; };
+		A10000000000000000000026 /* Main/MainUpperBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000028 /* MainUpperBar.swift */; };
+		A10000000000000000000027 /* Main/MainBottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000029 /* MainBottomBar.swift */; };
+		A1000000000000000000004B /* TextKit2MarkdownEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004C /* TextKit2MarkdownEditor.swift */; };
+		A1000000000000000000004D /* MarkdownTextDecorations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004E /* MarkdownTextDecorations.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A10000000000000000000028 /* Editor/Navigation/EditorTopBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorTopBar.swift; sourceTree = "<group>"; };
-		A10000000000000000000029 /* Editor/Navigation/EditorBottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorBottomBar.swift; sourceTree = "<group>"; };
-		A10000000000000000000040 /* BlockDocumentEditorSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockDocumentEditorSession.swift; sourceTree = "<group>"; };
 		A10000000000000000000007 /* Tessera.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tessera.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000012 /* TesseraApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseraApp.swift; sourceTree = "<group>"; };
-		A10000000000000000000013 /* Documents/MarkdownDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownDocument.swift; sourceTree = "<group>"; };
-		A10000000000000000000014 /* Editor/MainEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainEditorView.swift; sourceTree = "<group>"; };
+		A10000000000000000000013 /* MarkdownDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownDocument.swift; sourceTree = "<group>"; };
+		A10000000000000000000014 /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
 		A10000000000000000000023 /* EditorImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorImplementation.swift; sourceTree = "<group>"; };
-		A10000000000000000000024 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockDocumentEditorView.swift; sourceTree = "<group>"; };
-		A10000000000000000000025 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawMarkdownEditorView.swift; sourceTree = "<group>"; };
-		A1000000000000000000001D /* Platform/AppKit/BlockTextEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockTextEditor.swift; sourceTree = "<group>"; };
+		A10000000000000000000024 /* BlockDocumentEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockDocumentEditorView.swift; sourceTree = "<group>"; };
+		A10000000000000000000025 /* RawMarkdownEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawMarkdownEditorView.swift; sourceTree = "<group>"; };
+		A10000000000000000000028 /* MainUpperBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUpperBar.swift; sourceTree = "<group>"; };
+		A10000000000000000000029 /* MainBottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBottomBar.swift; sourceTree = "<group>"; };
+		A1000000000000000000004C /* TextKit2MarkdownEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextKit2MarkdownEditor.swift; sourceTree = "<group>"; };
+		A1000000000000000000004E /* MarkdownTextDecorations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextDecorations.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,6 +46,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		14E4262F309A01FA00359AEB /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000028 /* MainUpperBar.swift */,
+				A10000000000000000000029 /* MainBottomBar.swift */,
+				A10000000000000000000014 /* MainContentView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		A1000000000000000000000E = {
 			isa = PBXGroup;
 			children = (
@@ -69,30 +79,41 @@
 				A10000000000000000000031 /* Documents */,
 				A10000000000000000000032 /* Editor */,
 				A10000000000000000000033 /* Platform */,
+				14E4262F309A01FA00359AEB /* Main */,
 			);
 			path = Apps/TesseraMac;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000030 /* App */ = {
 			isa = PBXGroup;
-			children = (A10000000000000000000012 /* TesseraApp.swift */);
+			children = (
+				A10000000000000000000012 /* TesseraApp.swift */,
+			);
 			path = App;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000031 /* Documents */ = {
 			isa = PBXGroup;
-			children = (A10000000000000000000013 /* Documents/MarkdownDocument.swift */);
+			children = (
+				A10000000000000000000013 /* MarkdownDocument.swift */,
+			);
 			path = Documents;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000032 /* Editor */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000014 /* Editor/MainEditorView.swift */,
 				A10000000000000000000034 /* Content */,
-				A10000000000000000000035 /* Navigation */,
 			);
 			path = Editor;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000033 /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000038 /* AppKit */,
+			);
+			path = Platform;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000034 /* Content */ = {
@@ -105,39 +126,28 @@
 			path = Content;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000035 /* Navigation */ = {
-			isa = PBXGroup;
-			children = (
-				A10000000000000000000028 /* Editor/Navigation/EditorTopBar.swift */,
-				A10000000000000000000029 /* Editor/Navigation/EditorBottomBar.swift */,
-			);
-			path = Navigation;
-			sourceTree = "<group>";
-		};
 		A10000000000000000000036 /* BlockDocument */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000024 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift */,
-				A10000000000000000000040 /* BlockDocumentEditorSession.swift */,
+				A10000000000000000000024 /* BlockDocumentEditorView.swift */,
 			);
 			path = BlockDocument;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000037 /* RawMarkdown */ = {
 			isa = PBXGroup;
-			children = (A10000000000000000000025 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift */);
+			children = (
+				A10000000000000000000025 /* RawMarkdownEditorView.swift */,
+			);
 			path = RawMarkdown;
-			sourceTree = "<group>";
-		};
-		A10000000000000000000033 /* Platform */ = {
-			isa = PBXGroup;
-			children = (A10000000000000000000038 /* AppKit */);
-			path = Platform;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000038 /* AppKit */ = {
 			isa = PBXGroup;
-			children = (A1000000000000000000001D /* Platform/AppKit/BlockTextEditor.swift */);
+			children = (
+				A1000000000000000000004C /* TextKit2MarkdownEditor.swift */,
+				A1000000000000000000004E /* MarkdownTextDecorations.swift */,
+			);
 			path = AppKit;
 			sourceTree = "<group>";
 		};
@@ -216,15 +226,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				A10000000000000000000008 /* TesseraApp.swift in Sources */,
-				A10000000000000000000009 /* Documents/MarkdownDocument.swift in Sources */,
-				A1000000000000000000000A /* Editor/MainEditorView.swift in Sources */,
+				A10000000000000000000009 /* MarkdownDocument.swift in Sources */,
+				A1000000000000000000000A /* MainContentView.swift in Sources */,
 				A10000000000000000000020 /* EditorImplementation.swift in Sources */,
-				A10000000000000000000021 /* Editor/Content/BlockDocument/BlockDocumentEditorView.swift in Sources */,
-				A10000000000000000000022 /* Editor/Content/RawMarkdown/RawMarkdownEditorView.swift in Sources */,
-				A10000000000000000000026 /* Editor/Navigation/EditorTopBar.swift in Sources */,
-				A10000000000000000000027 /* Editor/Navigation/EditorBottomBar.swift in Sources */,
-				A10000000000000000000039 /* BlockDocumentEditorSession.swift in Sources */,
-				A1000000000000000000001E /* Platform/AppKit/BlockTextEditor.swift in Sources */,
+				A10000000000000000000021 /* BlockDocumentEditorView.swift in Sources */,
+				A10000000000000000000022 /* RawMarkdownEditorView.swift in Sources */,
+				A10000000000000000000026 /* Main/MainUpperBar.swift in Sources */,
+				A10000000000000000000027 /* Main/MainBottomBar.swift in Sources */,
+				A1000000000000000000004B /* TextKit2MarkdownEditor.swift in Sources */,
+				A1000000000000000000004D /* MarkdownTextDecorations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

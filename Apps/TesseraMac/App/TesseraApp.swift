@@ -7,7 +7,7 @@ struct TesseraApp: App {
 
         // Each document window gets its own editor view and bound Markdown document.
         DocumentGroup(newDocument: MarkdownDocument()) { configuration in
-            MainEditorView(document: configuration.$document)
+            MainContentView(document: configuration.$document)
                 .frame(minWidth: 640, minHeight: 480)
         }
     }

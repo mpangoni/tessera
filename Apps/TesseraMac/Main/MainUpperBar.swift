@@ -1,7 +1,7 @@
 import SwiftUI
 
 /// Provides the global switch between Tessera's document editing experiences.
-struct EditorTopBar: View {
+struct MainUpperBar: View {
     @Binding var selection: EditorMode
 
     var body: some View {
