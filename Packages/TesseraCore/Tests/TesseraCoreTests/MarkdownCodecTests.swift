@@ -30,6 +30,16 @@ import Testing
     #expect(kinds == [.heading(level: 1), .heading(level: 2), .heading(level: 3), .heading(level: 4), .heading(level: 5), .heading(level: 6), .orderedListItem(number: 1), .blockquote, .horizontalRule])
 }
 
+/// Horizontal-rule spellings and quote markers remain unchanged in an untouched document.
+@Test func horizontalRuleVariantsAndBlockquoteSourceRoundTripExactly() {
+    for rule in ["---", "***", "___"] {
+        let source = "Before\n\n> Quoted text\n\n\(rule)\n"
+        let document = MarkdownCodec.decode(source)
+        #expect(document.blocks.map(\.kind) == [.paragraph, .blockquote, .horizontalRule])
+        #expect(MarkdownCodec.encode(document) == source)
+    }
+}
+
 /// Editing a supported block does not rewrite an unrelated HTML block.
 @Test func editingSupportedBlockLeavesOpaqueSourceVerbatim() throws {
     var document = MarkdownCodec.decode("Before\n\n<table>\n<tr><td>x</td></tr>\n</table>\n\nAfter")
