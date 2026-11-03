@@ -3,7 +3,7 @@ import SwiftUI
 /// Composes document navigation and the selected content editor for one Markdown file.
 struct MainContentView: View {
     @Binding var document: MarkdownDocument
-    @State private var editorMode: EditorMode = .blocks
+    @State private var editorMode: EditorMode = .tessera
 
     init(document: Binding<MarkdownDocument>) {
         _document = document
@@ -20,10 +20,10 @@ struct MainContentView: View {
 
             Group {
                 switch editorMode {
-                case .blocks:
+                case .tessera:
                     blockEditor
-                case .rawMarkdown:
-                    RawMarkdownEditorView(markdown: documentMarkdownBinding)
+                case .markdown:
+                    MarkdownEditorView(markdown: documentMarkdownBinding)
                 }
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -52,6 +52,6 @@ struct MainContentView: View {
 
     /// Supplies the saved Markdown source to the document-wide TextKit editor.
     private var blockEditor: some View {
-        BlockDocumentEditorView(markdown: documentMarkdownBinding)
+        TesseraEditorView(markdown: documentMarkdownBinding)
     }
 }

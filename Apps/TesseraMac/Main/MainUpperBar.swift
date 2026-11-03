@@ -8,8 +8,8 @@ struct MainUpperBar: View {
         HStack {
             Spacer(minLength: 0)
             Picker("Document view", selection: $selection) {
-                editorOption(BlockDocumentEditorView.self)
-                editorOption(RawMarkdownEditorView.self)
+                editorOption(TesseraEditorView.self)
+                editorOption(MarkdownEditorView.self)
             }
             .pickerStyle(.segmented)
             .labelsHidden()

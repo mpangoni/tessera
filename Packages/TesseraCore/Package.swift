@@ -17,7 +17,7 @@ let package = Package(
         .testTarget(name: "TesseraCoreTests", dependencies: ["TesseraCore"]),
         .executableTarget(
             name: "MarkdownASTPreview",
-            dependencies: [.product(name: "Markdown", package: "swift-markdown")]
+            dependencies: ["TesseraCore"]
         )
     ]
 )

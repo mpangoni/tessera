@@ -12,12 +12,15 @@
 		A1000000000000000000000A /* MainContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000014 /* MainContentView.swift */; };
 		A1000000000000000000000B /* TesseraCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000006 /* TesseraCore */; };
 		A10000000000000000000020 /* EditorImplementation.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000023 /* EditorImplementation.swift */; };
-		A10000000000000000000021 /* BlockDocumentEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000024 /* BlockDocumentEditorView.swift */; };
-		A10000000000000000000022 /* RawMarkdownEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000025 /* RawMarkdownEditorView.swift */; };
+		A10000000000000000000021 /* TesseraEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000024 /* TesseraEditorView.swift */; };
+		A10000000000000000000022 /* MarkdownEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000025 /* MarkdownEditorView.swift */; };
 		A10000000000000000000026 /* Main/MainUpperBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000028 /* MainUpperBar.swift */; };
 		A10000000000000000000027 /* Main/MainBottomBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000029 /* MainBottomBar.swift */; };
 		A1000000000000000000004B /* TextKit2MarkdownEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004C /* TextKit2MarkdownEditor.swift */; };
 		A1000000000000000000004D /* MarkdownTextDecorations.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004E /* MarkdownTextDecorations.swift */; };
+		A10000000000000000000051 /* TextKitTesseraEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000050 /* TextKitTesseraEditor.swift */; };
+		A10000000000000000000054 /* TesseraTextProjection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000055 /* TesseraTextProjection.swift */; };
+		A10000000000000000000056 /* TesseraContentDecoration.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000057 /* TesseraContentDecoration.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,12 +29,15 @@
 		A10000000000000000000013 /* MarkdownDocument.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownDocument.swift; sourceTree = "<group>"; };
 		A10000000000000000000014 /* MainContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainContentView.swift; sourceTree = "<group>"; };
 		A10000000000000000000023 /* EditorImplementation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorImplementation.swift; sourceTree = "<group>"; };
-		A10000000000000000000024 /* BlockDocumentEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlockDocumentEditorView.swift; sourceTree = "<group>"; };
-		A10000000000000000000025 /* RawMarkdownEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RawMarkdownEditorView.swift; sourceTree = "<group>"; };
+		A10000000000000000000024 /* TesseraEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseraEditorView.swift; sourceTree = "<group>"; };
+		A10000000000000000000025 /* MarkdownEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownEditorView.swift; sourceTree = "<group>"; };
 		A10000000000000000000028 /* MainUpperBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainUpperBar.swift; sourceTree = "<group>"; };
 		A10000000000000000000029 /* MainBottomBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainBottomBar.swift; sourceTree = "<group>"; };
 		A1000000000000000000004C /* TextKit2MarkdownEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextKit2MarkdownEditor.swift; sourceTree = "<group>"; };
 		A1000000000000000000004E /* MarkdownTextDecorations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarkdownTextDecorations.swift; sourceTree = "<group>"; };
+		A10000000000000000000050 /* TextKitTesseraEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextKitTesseraEditor.swift; sourceTree = "<group>"; };
+		A10000000000000000000055 /* TesseraTextProjection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseraTextProjection.swift; sourceTree = "<group>"; };
+		A10000000000000000000057 /* TesseraContentDecoration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TesseraContentDecoration.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -76,8 +82,7 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000030 /* App */,
-				A10000000000000000000031 /* Documents */,
-				A10000000000000000000032 /* Editor */,
+				A10000000000000000000032 /* Editors */,
 				A10000000000000000000033 /* Platform */,
 				14E4262F309A01FA00359AEB /* Main */,
 			);
@@ -92,54 +97,42 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000031 /* Documents */ = {
+		A10000000000000000000032 /* Editors */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000013 /* MarkdownDocument.swift */,
+				A10000000000000000000023 /* EditorImplementation.swift */,
+				A10000000000000000000036 /* Tessera */,
+				A10000000000000000000037 /* Markdown */,
 			);
-			path = Documents;
-			sourceTree = "<group>";
-		};
-		A10000000000000000000032 /* Editor */ = {
-			isa = PBXGroup;
-			children = (
-				A10000000000000000000034 /* Content */,
-			);
-			path = Editor;
+			path = Editors;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000033 /* Platform */ = {
 			isa = PBXGroup;
 			children = (
+				A1000000000000000000004F /* Document */,
 				A10000000000000000000038 /* AppKit */,
 			);
 			path = Platform;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000034 /* Content */ = {
+		A10000000000000000000036 /* Tessera */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000023 /* EditorImplementation.swift */,
-				A10000000000000000000036 /* BlockDocument */,
-				A10000000000000000000037 /* RawMarkdown */,
+				A10000000000000000000024 /* TesseraEditorView.swift */,
+				A10000000000000000000050 /* TextKitTesseraEditor.swift */,
+				A10000000000000000000055 /* TesseraTextProjection.swift */,
+				A10000000000000000000057 /* TesseraContentDecoration.swift */,
 			);
-			path = Content;
+			path = Tessera;
 			sourceTree = "<group>";
 		};
-		A10000000000000000000036 /* BlockDocument */ = {
+		A10000000000000000000037 /* Markdown */ = {
 			isa = PBXGroup;
 			children = (
-				A10000000000000000000024 /* BlockDocumentEditorView.swift */,
+				A10000000000000000000025 /* MarkdownEditorView.swift */,
 			);
-			path = BlockDocument;
-			sourceTree = "<group>";
-		};
-		A10000000000000000000037 /* RawMarkdown */ = {
-			isa = PBXGroup;
-			children = (
-				A10000000000000000000025 /* RawMarkdownEditorView.swift */,
-			);
-			path = RawMarkdown;
+			path = Markdown;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000038 /* AppKit */ = {
@@ -149,6 +142,14 @@
 				A1000000000000000000004E /* MarkdownTextDecorations.swift */,
 			);
 			path = AppKit;
+			sourceTree = "<group>";
+		};
+		A1000000000000000000004F /* Document */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000013 /* MarkdownDocument.swift */,
+			);
+			path = Document;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -229,12 +230,15 @@
 				A10000000000000000000009 /* MarkdownDocument.swift in Sources */,
 				A1000000000000000000000A /* MainContentView.swift in Sources */,
 				A10000000000000000000020 /* EditorImplementation.swift in Sources */,
-				A10000000000000000000021 /* BlockDocumentEditorView.swift in Sources */,
-				A10000000000000000000022 /* RawMarkdownEditorView.swift in Sources */,
+				A10000000000000000000021 /* TesseraEditorView.swift in Sources */,
+				A10000000000000000000022 /* MarkdownEditorView.swift in Sources */,
 				A10000000000000000000026 /* Main/MainUpperBar.swift in Sources */,
 				A10000000000000000000027 /* Main/MainBottomBar.swift in Sources */,
 				A1000000000000000000004B /* TextKit2MarkdownEditor.swift in Sources */,
 				A1000000000000000000004D /* MarkdownTextDecorations.swift in Sources */,
+				A10000000000000000000051 /* TextKitTesseraEditor.swift in Sources */,
+				A10000000000000000000054 /* TesseraTextProjection.swift in Sources */,
+				A10000000000000000000056 /* TesseraContentDecoration.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

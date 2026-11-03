@@ -1,12 +1,12 @@
 import SwiftUI
 
 /// Edits the document's Markdown source directly in a native text editor.
-struct RawMarkdownEditorView: EditorImplementation {
+struct MarkdownEditorView: EditorImplementation {
     @Binding var markdown: String
 
-    static let mode: EditorMode = .rawMarkdown
+    static let mode: EditorMode = .markdown
     static let symbolName = "curlybraces"
-    static let displayName = "Raw Markdown"
+    static let displayName = "Markdown"
 
     var body: some View {
         TextEditor(text: $markdown)

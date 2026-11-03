@@ -12,6 +12,6 @@ protocol EditorImplementation: View {
 
 /// The two current ways to edit a Markdown document.
 enum EditorMode: Hashable {
-    case blocks
-    case rawMarkdown
+    case tessera
+    case markdown
 }
