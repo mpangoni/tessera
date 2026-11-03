@@ -69,6 +69,7 @@ Start quoted lines with `>`. Put the marker on blank lines between quoted paragr
 > A blank quoted line keeps the next paragraph inside the quote.
 ```
 
+It will render as this:
 
 > A short quotation can span more than one line. 
 >
@@ -83,6 +84,8 @@ Quotes can be nested by adding another marker:
 > > Nested quote
 ```
 
+It will render as this:
+
 > Outer quote
 >
 > > Nested quote
@@ -96,6 +99,8 @@ Blockquotes can also contain other Markdown, such as a heading or list:
 > - Keep related points together.
 > - Use a blank quoted line before a new paragraph.
 ```
+
+It will render as this:
 
 > ### Notes
 >
@@ -115,6 +120,12 @@ Use `-`, `*`, or `+` before each item. Pick one marker and use it consistently w
 - Third item
 ```
 
+It will render as this:
+
+- First item
+- Second item
+- Third item
+
 Indent nested items beneath their parent:
 
 ```markdown
@@ -123,6 +134,11 @@ Indent nested items beneath their parent:
   - Another point
 - Next topic
 ```
+
+- Main topic
+  - Supporting point
+  - Another point
+- Next topic
 
 ### Ordered lists
 
@@ -144,6 +160,12 @@ Ordered and unordered lists can be nested together:
 3. Publish the final copy
 ```
 
+1. Prepare the draft
+2. Review the details
+   - Check names
+   - Check dates
+3. Publish the final copy
+
 For compatibility, use periods rather than `)` as ordered-list markers. If a line begins with a number and period but should remain ordinary text, escape the period: `1968\. A year in a sentence.`
 
 ## Code
@@ -153,6 +175,8 @@ Use backticks for inline `code`, commands, file names, and short snippets.
 ```markdown
 Run `swift test` before sharing the change.
 ```
+
+Run `swift test` before sharing the change.
 
 For a code span that itself contains a backtick, surround it with a longer run of backticks:
 

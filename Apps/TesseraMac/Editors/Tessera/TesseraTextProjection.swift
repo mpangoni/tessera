@@ -20,6 +20,7 @@ struct TesseraTextProjection: ElementNodeVisitor {
 
     private(set) var nodeRanges: [UInt64: NSRange] = [:]
     private var outputOffset = 0
+    private var listDepth = 0
 
     struct RenderResult {
         let attributedString: NSAttributedString
@@ -35,7 +36,8 @@ struct TesseraTextProjection: ElementNodeVisitor {
             StrongTextFormat(),
             EmphasisTextFormat(),
             StrikethroughTextFormat(),
-            LinkTextFormat()
+            LinkTextFormat(),
+            BlockQuoteTextFormat()
         ]
     ) {
         self.artifact = artifact
@@ -77,6 +79,49 @@ struct TesseraTextProjection: ElementNodeVisitor {
         }
     }
 
+    /// Adds visible markers and paragraph indents for ordered, unordered, and nested lists.
+    mutating func visitList(_ node: ElementNode) -> NSAttributedString {
+        guard case let .list(ordered) = node.kind else { return visitChildren(node.children) }
+
+        let result = NSMutableAttributedString(string: "")
+        let currentDepth = listDepth
+        listDepth += 1
+
+        for (index, item) in node.children.enumerated() {
+            if index > 0 {
+                result.append(NSAttributedString(string: "\n"))
+                outputOffset += 1
+            }
+
+            let marker = ordered ? "\(index + 1)." : "•"
+            let font = NSFont.systemFont(ofSize: NSFont.systemFontSize)
+            let markerWidth = (marker as NSString).size(withAttributes: [.font: font]).width + 8
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.firstLineHeadIndent = CGFloat(currentDepth) * 22
+            paragraphStyle.headIndent = paragraphStyle.firstLineHeadIndent + markerWidth
+
+            let prefix = NSAttributedString(
+                string: "\(marker) ",
+                attributes: [
+                    .font: font,
+                    .foregroundColor: NSColor.labelColor,
+                    .paragraphStyle: paragraphStyle
+                ]
+            )
+            result.append(prefix)
+            outputOffset += prefix.length
+            result.append(visit(item))
+        }
+
+        listDepth = currentDepth
+        return result
+    }
+
+    /// Separates paragraphs inside a list item while preserving nested list structure.
+    mutating func visitListItem(_ node: ElementNode) -> NSAttributedString {
+        visitChildren(node.children, separator: "\n")
+    }
+
     /// Projects code first, then appends its optional language label as a footer line.
     mutating func visitCodeBlock(_ node: ElementNode) -> NSAttributedString {
         let result = NSMutableAttributedString(string: "")
@@ -101,16 +146,16 @@ struct TesseraTextProjection: ElementNodeVisitor {
         let result = NSMutableAttributedString(string: "")
 
         // Add block spacing in the parent document so it stays outside shaded code surfaces.
-        if separator == "\n\n", let first = children.first, isCodeBlock(first) {
+        if separator == "\n\n", let first = children.first, needsBlockSpacing(first) {
             result.append(NSAttributedString(string: "\n"))
             outputOffset += 1
         }
 
         for (index, child) in children.enumerated() {
             if index > 0, !separator.isEmpty {
-                let previousIsCode = isCodeBlock(children[index - 1])
-                let currentIsCode = isCodeBlock(child)
-                let blockSeparator = separator == "\n\n" && (previousIsCode || currentIsCode)
+                let previousNeedsSpacing = needsBlockSpacing(children[index - 1])
+                let currentNeedsSpacing = needsBlockSpacing(child)
+                let blockSeparator = separator == "\n\n" && (previousNeedsSpacing || currentNeedsSpacing)
                     ? separator + "\n"
                     : separator
                 result.append(NSAttributedString(string: blockSeparator))
@@ -119,16 +164,20 @@ struct TesseraTextProjection: ElementNodeVisitor {
             result.append(visit(child))
         }
 
-        if separator == "\n\n", let last = children.last, isCodeBlock(last) {
+        if separator == "\n\n", let last = children.last, needsBlockSpacing(last) {
             result.append(NSAttributedString(string: "\n"))
             outputOffset += 1
         }
         return result
     }
 
-    private func isCodeBlock(_ node: ElementNode) -> Bool {
-        if case .codeBlock = node.kind { return true }
-        return false
+    private func needsBlockSpacing(_ node: ElementNode) -> Bool {
+        switch node.kind {
+        case .codeBlock, .quote:
+            return true
+        default:
+            return false
+        }
     }
 
     /// Applies each registered text-format refinement without coupling the visitor to specific styles.
@@ -249,6 +298,31 @@ private struct CodeBlockBodyTextFormat: ElementTextFormat {
             }
             return codeFont
         }
+    }
+}
+
+/// Indents every quote paragraph by the same amount as code, preserving nested text styling.
+private struct BlockQuoteTextFormat: ElementTextFormat {
+    func format(_ text: NSAttributedString, for element: ElementNode) -> NSAttributedString {
+        guard case .quote = element.kind, text.length > 0 else { return text }
+
+        let formatted = NSMutableAttributedString(attributedString: text)
+        let source = formatted.string as NSString
+        var paragraphStart = 0
+
+        while paragraphStart < source.length {
+            let range = source.paragraphRange(for: NSRange(location: paragraphStart, length: 0))
+            guard range.length > 0 else { break }
+
+            let existing = formatted.attribute(.paragraphStyle, at: range.location, effectiveRange: nil) as? NSParagraphStyle
+            let paragraphStyle = (existing?.mutableCopy() as? NSMutableParagraphStyle) ?? NSMutableParagraphStyle()
+            paragraphStyle.firstLineHeadIndent = max(22, paragraphStyle.firstLineHeadIndent)
+            paragraphStyle.headIndent = max(22, paragraphStyle.headIndent)
+            formatted.addAttribute(.paragraphStyle, value: paragraphStyle, range: range)
+            paragraphStart = NSMaxRange(range)
+        }
+
+        return formatted
     }
 }
 
